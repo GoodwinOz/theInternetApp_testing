@@ -1,0 +1,31 @@
+{
+  "name": "internetapp.testing",
+  "version": "1.0.0",
+  "description": "testing https://the-internet.herokuapp.com/ with seleniumJS & chromedriver",
+  "main": "index.test.js",
+  "scripts": {
+    "test": "node index.test.js"
+  },
+  "jest": {
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "keywords": [
+    "selenium",
+    "theInternetApp",
+    "chromedriver"
+  ],
+  "author": "Goodwin",
+  "license": "MIT",
+  "dependencies": {
+    "chromedriver": "^89.0.0",
+    "nodemon": "^2.0.7",
+    "selenium": "^2.20.0",
+    "selenium-webdriver": "^4.0.0-beta.1"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
