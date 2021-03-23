@@ -1,3 +1,5 @@
+//Test code. Main test in: index.test.js
+
 // const webdriver = require('selenium-webdriver')
 
 //Test function
