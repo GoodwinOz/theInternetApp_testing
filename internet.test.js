@@ -21,7 +21,7 @@ let mainUrl = 'https://the-internet.herokuapp.com/'
 //Alternative:
 //let mainUrl = process.env.URL
 
-describe.skip('tests block', () => {
+describe('tests block', () => {
     beforeEach(async () => {
         driver = await new webdriver.Builder().forBrowser('chrome').build()
         await driver.get(mainUrl)
@@ -48,7 +48,7 @@ describe.skip('tests block', () => {
 
     // //Broken image
 
-    describe('execute testing scenario of broken images', () => { //Green
+    describe.skip('execute testing scenario of broken images', () => { //Green
         it('should check which images are broken', async (done) => {
             
             await driver.get(mainUrl + 'broken_images')
