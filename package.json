@@ -4,9 +4,7 @@
   "description": "Examples of snapshot tests with webdriverio & jasmine",
   "main": "snapshots.spec.js",
   "scripts": {
-    "test": "wdio",
-    "test:jest": "jest ./test/spec/snapshots.spec.js",
-    "test:jasmine": "jasmine"
+    "test": "wdio"
   },
   "author": "",
   "license": "ISC",
