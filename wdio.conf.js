@@ -68,6 +68,7 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'info',
+    sync: true,
     //
     // Set specific log levels per logger
     // loggers:
@@ -111,7 +112,7 @@ exports.config = {
         // The options
         {
             // Some options, see the docs for more
-            baselineFolder: join(process.cwd(), './tests/sauceLabsBaseline/'),
+            baselineFolder: join(process.cwd(), '.tmp/baseline/'),
             formatImageName: '{tag}-{logName}-{width}x{height}',
             screenshotPath: join(process.cwd(), '.tmp/'),
             savePerInstance: true,
