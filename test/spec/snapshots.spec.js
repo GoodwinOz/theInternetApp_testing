@@ -30,7 +30,7 @@ describe('Example', () => {
   })
 
   it('should check an element', async () => { 
-  // Check an element by id
+    // Check an element by id
     let element = await $('.buttons_1Wc3')
     expect(await browser.checkElement(element, 'bodyButtonsFrame')).toEqual(0)
   })
