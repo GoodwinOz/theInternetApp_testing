@@ -1,4 +1,4 @@
-node_modules
-.tmp
-tests
+snapshot.tests/node_modules
+snapshot.tests/.tmp
+snapshot.tests/tests
 .gitignore
