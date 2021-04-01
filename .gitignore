@@ -1,4 +1,6 @@
 snapshot.tests/node_modules
 snapshot.tests/.tmp
 snapshot.tests/tests
+theInternet.tests/node_modules
+.dotenv
 .gitignore
