@@ -1,5 +1,5 @@
 {
-  "name": "secons_snapshot",
+  "name": "snapshot",
   "version": "1.0.0",
   "description": "Examples of snapshot tests with webdriverio & jasmine",
   "main": "snapshots.spec.js",
