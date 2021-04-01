@@ -31,7 +31,7 @@ describe('Example', () => {
 
   it('should check an element', async () => { 
   // Check an element by id
-    let element = await $('.buttons_1Wc3')
-    expect(await browser.checkElement(element, 'bodyButtonsFrame')).toEqual(0)
+    let element = await $('#__docusaurus > div.main-wrapper > header > div > div.buttons_1Wc3 > a:nth-child(1)')
+    expect(await browser.checkElement(element, 'getStartedButton')).toEqual(0)
   })
 })
