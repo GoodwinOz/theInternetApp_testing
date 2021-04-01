@@ -1,3 +1,3 @@
-unit_integration.tests/node_modules
-unit_integration.tests/.dotenv
+theInternet.tests/node_modules
+.dotenv
 .gitignore
