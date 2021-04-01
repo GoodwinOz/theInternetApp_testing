@@ -1,2 +1,3 @@
-node_modules
-.dotenv
+unit_integration.tests/node_modules
+unit_integration.tests/.dotenv
+.gitignore
