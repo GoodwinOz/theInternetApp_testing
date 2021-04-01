@@ -6,9 +6,10 @@ const chrome = require('selenium-webdriver/chrome')
 const options = new chrome.Options()
 const script = require('jest')
 const assert = require('assert')
+const { UsingJoinTableIsNotAllowedError } = require('typeorm')
 require('dotenv').config()
 
-    //Crome capabilities for testing download functions
+    //Chrome capabilities for testing download functions
 // let chromeCapabilities = webdriver.Capabilities.chrome();
 // let chromeOptions = { 'args': ['--disable-infobars'] };
 // chromeCapabilities.set('chromeOptions', chromeOptions);
@@ -1121,7 +1122,7 @@ describe('tests block', () => {
 
     describe('execute scenario of testing a shifting buttons', () => { //Green with questions: parse html data after every page reload
         it('should move coursor on each shifted and unshifted button', async (done) => {
-
+            jest.setTimeout(15000)
             const actions = driver.actions({async: true})
             await driver.get(mainUrl + 'shifting_content')
             

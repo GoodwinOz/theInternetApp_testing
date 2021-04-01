@@ -1,0 +1,232 @@
+<html><head><meta charset="utf-8"/><title>theInternetApp html report</title><style type="text/css">html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+body {
+  padding: 2rem 1rem;
+  font-size: 0.85rem;
+}
+#jesthtml-content {
+  margin: 0 auto;
+  max-width: 70rem;
+}
+header {
+  display: flex;
+  align-items: center;
+}
+#title {
+  margin: 0;
+  flex-grow: 1;
+}
+#logo {
+  height: 4rem;
+}
+#timestamp {
+  color: #777;
+  margin-top: 0.5rem;
+}
+
+/** SUMMARY */
+#summary {
+  color: #333;
+  margin: 2rem 0;
+  display: flex;
+  font-family: monospace;
+  font-size: 1rem;
+}
+#summary > div {
+  margin-right: 2rem;
+  background: #eee;
+  padding: 1rem;
+  min-width: 15rem;
+}
+#summary > div:last-child {
+  margin-right: 0;
+}
+@media only screen and (max-width: 720px) {
+  #summary {
+    flex-direction: column;
+  }
+  #summary > div {
+    margin-right: 0;
+    margin-top: 2rem;
+  }
+  #summary > div:first-child {
+    margin-top: 0;
+  }
+}
+
+.summary-total {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.summary-passed {
+  color: #4f8a10;
+  border-left: 0.4rem solid #4f8a10;
+  padding-left: 0.5rem;
+}
+.summary-failed,
+.summary-obsolete-snapshots {
+  color: #d8000c;
+  border-left: 0.4rem solid #d8000c;
+  padding-left: 0.5rem;
+}
+.summary-pending {
+  color: #9f6000;
+  border-left: 0.4rem solid #9f6000;
+  padding-left: 0.5rem;
+}
+.summary-empty {
+  color: #999;
+  border-left: 0.4rem solid #999;
+}
+
+.test-result {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+.test-result:last-child {
+  border: 0;
+}
+.test-result.passed {
+  background-color: #dff2bf;
+  color: #4f8a10;
+}
+.test-result.failed {
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.test-result.pending {
+  background-color: #ffdf61;
+  color: #9f6000;
+}
+
+.test-info {
+  display: flex;
+  justify-content: space-between;
+}
+.test-suitename {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
+  word-break: break-word;
+}
+.test-title {
+  width: 40%;
+  text-align: left;
+  font-style: italic;
+}
+.test-status {
+  width: 20%;
+  text-align: right;
+}
+.test-duration {
+  width: 10%;
+  text-align: right;
+  font-size: 0.75rem;
+}
+
+.failureMessages {
+  padding: 0 1rem;
+  margin-top: 1rem;
+  border-top: 1px dashed #d8000c;
+}
+.failureMessages.suiteFailure {
+  border-top: none;
+}
+.failureMsg {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.suite-container {
+  margin-bottom: 2rem;
+}
+.suite-info {
+  padding: 1rem;
+  background-color: #eee;
+  color: #777;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.suite-info .suite-path {
+  word-break: break-all;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1rem;
+}
+.suite-info .suite-time {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.75rem;
+}
+.suite-info .suite-time.warn {
+  background-color: #d8000c;
+  color: #fff;
+}
+
+/* CONSOLE LOGS */
+.suite-consolelog {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #efefef;
+}
+.suite-consolelog-header {
+  font-weight: bold;
+}
+.suite-consolelog-item {
+  padding: 0.5rem;
+}
+.suite-consolelog-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-consolelog-item-origin {
+  color: #777;
+  font-weight: bold;
+}
+.suite-consolelog-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+
+/* OBSOLETE SNAPSHOTS */
+.suite-obsolete-snapshots {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.suite-obsolete-snapshots-header {
+  font-weight: bold;
+}
+.suite-obsolete-snapshots-item {
+  padding: 0.5rem;
+}
+.suite-obsolete-snapshots-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-obsolete-snapshots-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+</style></head><body><div id="jesthtml-content"><header><h1 id="title">theInternetApp html report</h1></header><div id="metadata-container"><div id="timestamp">Started: 2021-04-01 13:36:45</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (1)</div><div class="summary-passed">1 passed</div><div class="summary-failed summary-empty">0 failed</div><div class="summary-pending summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (36)</div><div class="summary-passed">35 passed</div><div class="summary-failed summary-empty">0 failed</div><div class="summary-pending">1 pending</div></div></div></div><div id="suite-1" class="suite-container"><div class="suite-info"><div class="suite-path">/home/dev/Documents/traineeQa/Projects 4.3/internetApp.testing/theInternet.tests/internet.test.js</div><div class="suite-time warn">155.628s</div></div><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute testing scenario of auth alert; #auth</div><div class="test-title">should check a validation of input data to auth alert box</div><div class="test-status">passed</div><div class="test-duration">4.143s</div></div></div><div class="test-result pending"><div class="test-info"><div class="test-suitename">tests block &gt; execute testing scenario of broken images</div><div class="test-title">should check which images are broken</div><div class="test-status">pending</div><div class="test-duration">0s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute testing scenario of finding elements (?)</div><div class="test-title">should check a valid answers of various buttons</div><div class="test-status">passed</div><div class="test-duration">3.103s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute testing scenario of using checkboxes</div><div class="test-title">should use a ckeckbox</div><div class="test-status">passed</div><div class="test-duration">3.138s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute testing scenario of using context menu</div><div class="test-title">should trigger the alert message</div><div class="test-status">passed</div><div class="test-duration">2.966s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute testing scenario of moving mouse pointer on various elements</div><div class="test-title">should highlight various elements</div><div class="test-status">passed</div><div class="test-duration">3.471s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute testing scenario of using drag and drop</div><div class="test-title">should drag element "a" to position, where element "b" located</div><div class="test-status">passed</div><div class="test-duration">3.017s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute testing scenario of dropdown menu</div><div class="test-title">should select values from dropdown menu</div><div class="test-status">passed</div><div class="test-duration">3.035s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing dynamic content</div><div class="test-title">should dynamically change text after clicking on link</div><div class="test-status">passed</div><div class="test-duration">3.996s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing dynamic controls</div><div class="test-title">should dynamically enable and disable elements on the page</div><div class="test-status">passed</div><div class="test-duration">9.58s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing dynamically loaded elements and pages</div><div class="test-title">should dynamically test elements on opened pages</div><div class="test-status">passed</div><div class="test-duration">14.435s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a modal window functions</div><div class="test-title">should validate modal window info and reopen it</div><div class="test-status">passed</div><div class="test-duration">6.437s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a download function; #download</div><div class="test-title">should download a file from test page</div><div class="test-status">passed</div><div class="test-duration">3.041s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a upload function</div><div class="test-title">should upload a file to test page</div><div class="test-status">passed</div><div class="test-duration">3.994s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a floating menu</div><div class="test-title">should scroll down and click on floating menu bar</div><div class="test-status">passed</div><div class="test-duration">3.306s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a forgot password input field</div><div class="test-title">should input into a field an email and click a *retrieve* button</div><div class="test-status">passed</div><div class="test-duration">3.226s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing login &amp; logout functions</div><div class="test-title">should input a valid username &amp; pass -&gt; check if logged in -&gt; log out -&gt; check if logged out; #auth</div><div class="test-status">passed</div><div class="test-duration">5.2s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing frames on page</div><div class="test-title">should check frames on few pages</div><div class="test-status">passed</div><div class="test-duration">4.862s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a horizontal slider</div><div class="test-title">should slide a slider for generating a diffetent values</div><div class="test-status">passed</div><div class="test-duration">2.838s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a hover elements</div><div class="test-title">should place a cursor on each element; information of each element should be displayed</div><div class="test-status">passed</div><div class="test-duration">3.856s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing an infinite scroll</div><div class="test-title">should scroll a webpage</div><div class="test-status">passed</div><div class="test-duration">3.018s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing input number function</div><div class="test-title">should input a positive number, negative number, +# to number, -# to number</div><div class="test-status">passed</div><div class="test-duration">3.245s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing JQuery UI menu</div><div class="test-title">should check all menu positions/variables/buttons</div><div class="test-status">passed</div><div class="test-duration">6.398s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenatio of testing js alerts</div><div class="test-title">it should test all js alerts</div><div class="test-status">passed</div><div class="test-duration">3.113s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenatio of testing key presses</div><div class="test-title">it should display a last inputed into a string key</div><div class="test-status">passed</div><div class="test-duration">2.976s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a large DOM</div><div class="test-title">should render a page on various "deep" and switch between "anchors"</div><div class="test-status">passed</div><div class="test-duration">5.753s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing opening a new window</div><div class="test-title">should open a new window after clicking a link and switch on it </div><div class="test-status">passed</div><div class="test-duration">3.495s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing nested frames on page</div><div class="test-title">should check nested frames info on pages</div><div class="test-status">passed</div><div class="test-duration">3.372s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a notification message generator</div><div class="test-title">should generate a various notification messages afret clicking on btn</div><div class="test-status">passed</div><div class="test-duration">3.469s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a redirection</div><div class="test-title">should redirect on pages with various statuses.</div><div class="test-status">passed</div><div class="test-duration">4.592s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a secured download function; #auth #download</div><div class="test-title">should sign in like admin user and download a file</div><div class="test-status">passed</div><div class="test-duration">3.234s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing text in shadow frame</div><div class="test-title">should get and check text from shadow frames</div><div class="test-status">passed</div><div class="test-duration">2.793s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing a shifting buttons</div><div class="test-title">should move coursor on each shifted and unshifted button</div><div class="test-status">passed</div><div class="test-duration">9.125s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing status codes page</div><div class="test-title">should get and check text from shadow frames</div><div class="test-status">passed</div><div class="test-duration">4.173s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing status codes page</div><div class="test-title">should get and check text from shadow frames</div><div class="test-status">passed</div><div class="test-duration">3.14s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">tests block &gt; execute scenario of testing text editor</div><div class="test-title">should input text to editor</div><div class="test-status">passed</div><div class="test-duration">4.102s</div></div></div></div></div></div></body></html>

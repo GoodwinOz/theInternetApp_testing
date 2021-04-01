@@ -1,3 +1,4 @@
+.env
 theInternet.tests/node_modules
-.dotenv
-.gitignore
+theInternet.tests/.env
+node_modules
