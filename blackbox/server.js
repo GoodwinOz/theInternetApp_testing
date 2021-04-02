@@ -27,7 +27,7 @@ app.use(express.json())
 app.use(passport.initialize())
 app.use(passport.session())
 app.use('/api/users', usersRoutes)
-app.use('/api/posts', /*verifyToken,*/ postRoutes) //added verification for *GETting* Posts list
+app.use('/api/posts', verifyToken, postRoutes) //added verification for *GETting* Posts list
 app.use('/api/upload', uploadRoutes)
 
 

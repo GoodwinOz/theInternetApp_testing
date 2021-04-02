@@ -60,9 +60,7 @@ router.post('/login', async(req, res) => {
         if(decryptedPass) {
             res.header('Authorization', token).json({
                 error: null,
-                data: {
-                    token
-                }
+                token
             })
         } else {
             res.json({ message: 'Invalid user data' })

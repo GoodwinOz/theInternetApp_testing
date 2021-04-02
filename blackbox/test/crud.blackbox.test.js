@@ -6,6 +6,7 @@ const expect = chai.expect
 let mock = new MockAdapter(axios)
 
 
+
 //End-to-end тест в отдельную ветку.
 //User reg -> get token -> get posts/by id
 

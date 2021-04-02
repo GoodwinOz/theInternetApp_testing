@@ -10,7 +10,8 @@
     "test:unit": "mocha ./test/crud.unit.test.js -R nyan",
     "test:int": "mocha ./test/crud.int.test.js -R nyan",
     "test:blackbox": "mocha ./test/crud.blackbox.test.js -R nyan",
-    "test:blackbox:jest": "jest ./test/crud.blackbox.test.js"
+    "test:blackbox:jest": "jest ./test/crud.blackbox.test.js",
+    "test:e2e": "mocha ./test/crud.end-to-end.test.js -R nyan"
   },
   "keywords": [
     "node",
