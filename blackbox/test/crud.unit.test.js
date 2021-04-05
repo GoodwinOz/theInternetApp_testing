@@ -1,12 +1,34 @@
 const sinon = require('sinon')
 const chai = require('chai')
 const expect = require('chai').expect
+const request = require('supertest')
 
+const app = require('../server')
 const Post = require('../models/post.model')
 const User = require('../models/users.model')
 
 chai.use(require('sinon-chai'));
 
+//units without mocking
+describe('login', async() => {
+    it('should return status 200 after login', async() => {
+        const res = await request(app).post('/api/users/login').send({
+            email: "url@gmail.com",
+            password: "qwerty123"
+        })
+        expect(res.statusCode).eq(200)
+        expect(res.body).to.have.property('token')
+    })
+})
+
+describe('get users', () => {
+    it('should return status 200 after login', async() => {
+        const res = await request(app).get('/api/users')
+        expect(res.statusCode).eq(200)
+    })
+})
+
+//Units with mocking (sinon)
 const user = {
     setNameAndSurname: function() {
         nameAndSurname = User.nameAndSurname
@@ -24,7 +46,6 @@ describe('testing setNameAndSurname function', function() {
         setNameAndSurnameSpy.restore()
     })
 })
-
 
 describe('Post routes testing', () => {
     let req = {
@@ -58,7 +79,7 @@ describe('Post routes testing', () => {
         it('Should call next func with error message', async () => {
             try {
                 req.body.id = 123123
-                await Post.create(req, res, nextFunction)
+                await Post.findByPk(req.body.id, nextFunction)
                 sinon.assert.calledOnce(nextFunction)
             } catch (e) {
                 console.log(e, `Error occured. Check the entered id ID ${req.body.id}`)
@@ -67,7 +88,7 @@ describe('Post routes testing', () => {
     })
 })
 
-//
+
 describe('User routes', () => {
     let req = {
         body: {
@@ -92,6 +113,7 @@ describe('User routes', () => {
             }
             nextFunction = sinon.spy()
         })
+        
         it('Should return user as obj.', async () => {
             expextedResult = req.body
             sinon.stub(User, 'create').returns(expextedResult)
@@ -105,7 +127,7 @@ describe('User routes', () => {
         it('Should call next func with error message', async () => {
             try {
                 req.body.id = 123123
-                await User.create(req, res, nextFunction)
+                await User.findByPk(req.body.id, nextFunction)
                 sinon.assert.calledOnce(nextFunction)
             } catch (e) {
                 console.log(e, `Error occured. Check the ID ${req.body.id}`)

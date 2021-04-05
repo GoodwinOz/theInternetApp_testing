@@ -1,3 +1,7 @@
 blackbox/node_modules
 blackbox/.env
 .gitignore
+theInternet.tests/node_modules
+.dotenv
+.env
+.gitignore
