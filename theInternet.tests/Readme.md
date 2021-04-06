@@ -15,3 +15,5 @@ Run tests for "theInternetApp" in --watch mode ("test:watch": "jest --watch --ru
 Run tests with '#auth' tag in thier names: ("test:auth": "npm run test -- -t '#auth'"): **npm run test:auth**;
 
 Run tests with '#download' tag in their names: ("test:auth": "npm run test -- -t '#download'"): **npm run test:download**;
+
+Send test report (passed/failed/skipped/etc...) to email address. Address can be changed in "nodemailer.js" doc. ("sendReport": "node nodemailer.js"): **npm run sendReport**
