@@ -8,12 +8,25 @@
     "test:auth": "npm run test -- -t '#auth'",
     "test:download": "npm run test -- -t '#download'",
     "test:debug": "node --inspect node_modules/.bin/jest --watch --runInBand internet.test.js",
-    "test:watch": "jest --watch --runInBand"
+    "test:watch": "jest --watch --runInBand",
+    "sendReport": "node nodemailer.js"
   },
   "jest": {
     "verbose": true,
     "testPathIgnorePatterns": [
       "/node_modules/"
+    ],
+    "reporters": [
+      "default",
+      [
+        "./node_modules/jest-html-reporter",
+        {
+          "pageTitle": "theInternetApp Test Report",
+          "outputPath": "reports/index.html",
+          "includeFailureMsg": true,
+          "openReport": true
+        }
+      ]
     ]
   },
   "keywords": [
@@ -36,6 +49,8 @@
     "webdriver-manager": "^12.1.8"
   },
   "devDependencies": {
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "jest-html-reporter": "^3.3.0",
+    "nodemailer": "^6.5.0"
   }
 }

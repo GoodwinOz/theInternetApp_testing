@@ -8,7 +8,7 @@ const script = require('jest')
 const assert = require('assert')
 require('dotenv').config()
 
-    //Crome capabilities for testing download functions
+    //Chrome capabilities for testing download functions
 // let chromeCapabilities = webdriver.Capabilities.chrome();
 // let chromeOptions = { 'args': ['--disable-infobars'] };
 // chromeCapabilities.set('chromeOptions', chromeOptions);
@@ -16,7 +16,7 @@ require('dotenv').config()
 
 
 let driver
-let mainUrl = 'https://the-internet.herokuapp.com/' 
+let mainUrl = 'https://the-internet.herokuapp.com/'
 
 //Alternative:
 //let mainUrl = process.env.URL
@@ -112,7 +112,6 @@ describe('tests block', () => {
             
             let checkbox1 = await driver.findElement(By.xpath('//*[@id="checkboxes"]/input[2]'))
             await actions.doubleClick(checkbox1).perform()
-            // let checkIfPressed = await driver.findElement(By.xpath('//*[@id="checkboxes"]/input[1]'))
             
             await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="checkboxes"]/input[2]')),10000)
             await driver.findElement(By.xpath('//*[@id="checkboxes"]/input[2]')).click() 
@@ -151,6 +150,8 @@ describe('tests block', () => {
     // // .only - единичный запуск теста  .skip - пропуск теста (единичного)
     describe('execute testing scenario of moving mouse pointer on various elements', () => { //Green (Detectiong *gallery element* - commentet)
         it('should highlight various elements', async (done) => {
+            jest.setTimeout(10000)
+
             await driver.get(mainUrl + 'disappearing_elements')
 
             await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/ul/li[1]/a')))
@@ -299,7 +300,7 @@ describe('tests block', () => {
             await driver.findElement(By.xpath('/html/body/div[2]/div/div[1]/form[2]/button')).click()
 
             done()
-        }, 15000 /*Musthave here; else - error: asyn callback was not envoked within 5k ms timeout*/)
+        }, 15000 /*Musthave here; else - error: async callback was not envoked within 5k ms timeout*/)
     })
 
     // Dynamically loaded elements
@@ -520,9 +521,6 @@ describe('tests block', () => {
             //Input email to input field
             await driver.findElement(By.id('email')).sendKeys('random_email@gmail.com')
 
-            // let inputVerify = driver.findElement(By.id('email')).getText()
-            // expect(inputVerify).toEqual('random_email@gmail.com')
-
             await driver.findElement(By.xpath('//*[@id="form_submit"]/i')).click()
 
             let expectedText = await driver.findElement(By.xpath('/html/body/h1')).getText()
@@ -685,6 +683,7 @@ describe('tests block', () => {
             await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys('0')
     
             await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys(Key.ARROW_UP)
+
             // Numbers can't be readed from input field
             // let numberAfterPushingButton = await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).getText()
             // expect(numberAfterPushingButton).toEqual('1')
@@ -694,9 +693,10 @@ describe('tests block', () => {
             let notValidText = await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).getText()
             expect(notValidText).not.toEqual('asdasd')
 
+            //Var №2 .getText(), but in this case - .getText can't be detected in inputString
             // let numberAfterPushingAnotherButton = await driver.findElement(By.css('#content > div > div > div > input[type=number]')).getText()
             // expect(numberAfterPushingAnotherButton).toBe('0')
-            //getText can't be detected in inputString
+            
 
             done()
         }, 7000)
@@ -834,6 +834,7 @@ describe('tests block', () => {
             let key2 = await driver.findElement(By.xpath('//*[@id="target"]')).getText()
 
             expect(key2).toBe('')
+
             //Result = no difference between different languages, only eng language supported
             //й is not detected by "Result" string
 
@@ -854,6 +855,7 @@ describe('tests block', () => {
 
     describe('execute scenario of testing a large DOM', () => { // Green
         it('should render a page on various "deep" and switch between "anchors"', async (done) => {
+            jest.setTimeout(10000)
 
             let actions = driver.actions({async: true})
             await driver.get(mainUrl + 'large')
@@ -890,11 +892,11 @@ describe('tests block', () => {
             
             //Back to top
             done()
-        }, 10000)
-    })
+        })
+    },10000)
 
     // //New window
-
+    
     describe('execute scenario of testing opening a new window', () => {//Green
         it('should open a new window after clicking a link and switch on it ', async (done) => {
 
@@ -1077,9 +1079,9 @@ describe('tests block', () => {
             await driver.findElement(By.xpath('//*[@id="content"]/div/a[1]')).click()
 
 
-            // await driver.findElement(By.name("Username")).sendKeys("admin");
+            // await driver.findElement(By.name("Username")).sendKeys("admin")
                 
-            // await driver.findElement(By.name("Password")).sendKeys("123");					
+            // await driver.findElement(By.name("Password")).sendKeys("123")
                 
             //Switching to alert
             // await driver.wait(webdriver.until.alertIsPresent())
@@ -1121,7 +1123,7 @@ describe('tests block', () => {
 
     describe('execute scenario of testing a shifting buttons', () => { //Green with questions: parse html data after every page reload
         it('should move coursor on each shifted and unshifted button', async (done) => {
-
+            jest.setTimeout(15000)
             const actions = driver.actions({async: true})
             await driver.get(mainUrl + 'shifting_content')
             
