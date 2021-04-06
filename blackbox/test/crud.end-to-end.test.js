@@ -1,125 +1,78 @@
 // Create user => get token after creation => post something to "posts" with userID => get post by id => delete post by ID
 
+const { expect } = require('chai')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
+const request = require('supertest')
 
-const server = require('../server')
-const should = chai.should()
+const app = require('../server')
 
 //Assert syle
+const should = chai.should()
 chai.should()
 chai.use(chaiHttp)
 
-describe('Crud API e2e tests', () =>  { //Green
-    // describe('Creating user', () => {
-    //     it('should create a user', () => {
-    //         const user = {
-    //             login: "e2e",
-    //             nameAndSurname: "E2E Test",
-    //             password: "qwerty123",
-    //             mobileNumber: "3800001",
-    //             gender: "male",
-    //             email: "e2e@gmail.com",
-    //             status: "admin"
-    //         }
-            
-    //         //Registrationg user
-    //         chai.request(server)
-    //             .post('/api/users/register')
-    //             .send(user)
-    //             .end((err, res) => {
-    //                 res.should.have.status(200)
-    //                 res.body.should.be.a('object')
-    //                 res.body.should.have.property('login')
-    //                 res.body.should.have.property('nameAndSurname')
-    //                 res.body.should.have.property('modileNumber')
-    //                 res.body.should.have.property('gender')
-    //                 res.body.should.have.property('email')
-    //                 res.body.should.have.property('login').eq('e2e')
-    //             })
-    //         })
-    //     })
-    
-    describe('test token function', () => { //Green (Login as url user => get token => get posts)
-        it('should get jwt token from body', () => {
-            const mainUser = {
-                email: 'e2e',
-                password: 'qwerty123'
-            }
-            const testPost = {
-                userID: '1',
-                title: 'e2e test post',
-                text: 'e2e test post text'
-            }
-            const user = {
-                email: 'url@gmail.com',
-                password: 'qwerty123'
-            }
+const newUser = {
+    login: "e2eNum5",
+    nameAndSurname: "E2E Test",
+    password: "qwerty123",
+    mobileNumber: "3800001",
+    gender: "male",
+    email: "e2eNum5@gmail.com",
+    status: "admin"
+}
+const newUserLogin = {
+    email: 'e2eNum5',
+    password: 'qwerty123'
+}
+const newE2ePost = {
+    userID: '1',
+    title: 'e2e test post',
+    text: 'e2e test post text'
+}
+const testLoginUser = {
+    email: 'url@gmail.com',
+    password: 'qwerty123'
+}
 
-            //Login for getting JWT token
-            chai.request(server)
-                .post('/api/users/login')
-                .send(user)
-                .end((err, res) => {
-                    let token = res.body.token
+const postId = 18
 
-                    //Getting all posts in array with sending JWT token
-                    chai.request(server)
-                        .get('/api/posts')
-                        .set('Authorization', token)
-                        .end((err, res) => {
-                            res.should.have.status(200)
-                            res.body.should.be.a('array')
-                        })
-                    //Post a test post with setting JWT token
-                    // chai.request(server)
-                    //     .post('/api/posts')
-                    //     .set('Authorization', token)
-                    //     .send(testPost)
-                    //     .end((err, res) => {
-                    //         res.should.have.status(200)
-                    //         res.body.should.have.property('userID')
-                    //         res.body.should.have.property('title')
-                    //         res.body.should.have.property('text')
-                    //     })
 
-                    //Getting created post by id
-                    chai.request(server)
-                        .get('/api/posts/62')
-                        .set('Authorization', token)
-                        .end((err, res) => {
-                            res.should.have.status(200)
-                            res.body.should.be.a('object')
-                            res.body.should.have.property('id')
-                            res.body.should.have.property('userID')
-                            res.body.should.have.property('title')
-                            res.body.should.have.property('text')
-                        })
-                })
-        })
-    })
-    describe('Delete created post', () => {
-        it('should delete a created post by id', () => { 
-            const postId = 58 //If id is not defined or post already deleted => error
-            const user = {
-                email: 'url@gmail.com',
-                password: 'qwerty123'
-            }
-            //Login for getting JWT token
-            chai.request(server)
-                .post('/api/users/login')
-                .send(user)
-                .end((err, res) => {
-                    // res.body.should.have.property('token')
-                    let token = res.body.token
-                    
-                    //Deleting post by id with JWT token
-                    chai.request(server)
-                        .del('/api/posts/' + postId).set('Authorization', token)
-                        .end((err, res) => {
-                            res.should.have.status(204)
-                        })
-                    })
-        })
+describe('Async e2e tests', () => {
+    it('should run a process of async. testing', async() => {
+        const resReg = await request(app).post('/api/users/register').send(newUser)
+        expect(resReg.statusCode).eq(200)
+        expect(resReg.body).should.be.a('object')
+        expect(resReg.body).to.have.property('login')
+        expect(resReg.body).to.have.property('nameAndSurname')
+        expect(resReg.body).to.have.property('mobileNumber')
+        expect(resReg.body).to.have.property('gender')
+        expect(resReg.body).to.have.property('email')
+        expect(resLogin.body).to.have.property('login').eq('e2e')
+
+        const resLogin = await request(app).post('/api/users/login').send(testLoginUser)
+        let token = resLogin.body.token
+        expect(resLogin.statusCode).eq(200)
+        expect(resLogin.body).to.have.property('token')
+
+        const resGetPosts = await request(app).get('/api/posts').set('Authorization', token)
+        expect(resGetPosts.statusCode).eq(200)
+        expect(resGetPosts.body).to.be.a('array')
+
+        const resNewPost = await request(app).post('/api/posts').set('Authorization', token).send(newE2ePost)
+        expect(resNewPost.statusCode).eq(200)
+        expect(resNewPost.body).to.have.property('userID')
+        expect(resNewPost.body).to.have.property('title')
+        expect(resNewPost.body).to.have.property('text')
+
+        const resGetPostById = await request(app).get('/api/posts/73').set('Authorization', token)
+        expect(resGetPostById.statusCode).eq(200)
+        expect(resGetPostById.body).to.have.property('id')
+        expect(resGetPostById.body).to.have.property('userID')
+        expect(resGetPostById.body).to.have.property('title')
+        expect(resGetPostById.body).to.have.property('text')
+
+        const resDeletePostById = await request(app).del('/api/posts/' + postId).set('Authorization', token)
+        expect(resDeletePostById.statusCode).eq(204)
     })
 })
