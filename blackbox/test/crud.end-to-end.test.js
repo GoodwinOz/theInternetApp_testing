@@ -1,5 +1,4 @@
 // Create user => get token after creation => post something to "posts" with userID => get post by id => delete post by ID
-
 const { expect } = require('chai')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
@@ -13,18 +12,15 @@ chai.should()
 chai.use(chaiHttp)
 
 const newUser = {
-    login: "e2eNum5",
-    nameAndSurname: "E2E Test",
+    login: "newUser13",
+    nameAndSurname: "NewTest User",
     password: "qwerty123",
     mobileNumber: "3800001",
     gender: "male",
-    email: "e2eNum5@gmail.com",
+    email: "newUser13@gmail.com",
     status: "admin"
 }
-const newUserLogin = {
-    email: 'e2eNum5',
-    password: 'qwerty123'
-}
+
 const newE2ePost = {
     userID: '1',
     title: 'e2e test post',
@@ -35,11 +31,11 @@ const testLoginUser = {
     password: 'qwerty123'
 }
 
-const postId = 18
+const postId = 34
 
 
 describe('Async e2e tests', () => {
-    it('should run a process of async. testing', async() => {
+    it('should run a process of async. testing', async function() {
         const resReg = await request(app).post('/api/users/register').send(newUser)
         expect(resReg.statusCode).eq(200)
         expect(resReg.body).should.be.a('object')
@@ -48,9 +44,9 @@ describe('Async e2e tests', () => {
         expect(resReg.body).to.have.property('mobileNumber')
         expect(resReg.body).to.have.property('gender')
         expect(resReg.body).to.have.property('email')
-        expect(resLogin.body).to.have.property('login').eq('e2e')
+        // expect(resReg.body).to.have.property('login').eq('newUser0') //Enter valid login property
 
-        const resLogin = await request(app).post('/api/users/login').send(testLoginUser)
+        const resLogin = await request(app).post('/api/users/login').send({email: newUser.email, password: newUser.password})
         let token = resLogin.body.token
         expect(resLogin.statusCode).eq(200)
         expect(resLogin.body).to.have.property('token')
@@ -71,7 +67,7 @@ describe('Async e2e tests', () => {
         expect(resGetPostById.body).to.have.property('userID')
         expect(resGetPostById.body).to.have.property('title')
         expect(resGetPostById.body).to.have.property('text')
-
+        
         const resDeletePostById = await request(app).del('/api/posts/' + postId).set('Authorization', token)
         expect(resDeletePostById.statusCode).eq(204)
     })

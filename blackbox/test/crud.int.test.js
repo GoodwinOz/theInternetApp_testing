@@ -17,12 +17,12 @@ const testLoginUser = {
 }
 
 const newIngetrationUser = {
-    login: "IntNum1",
-    nameAndSurname: "E2E Test",
+    login: "IntNum6",
+    nameAndSurname: "Integration Testing",
     password: "qwerty123",
     mobileNumber: "3800001",
     gender: "male",
-    email: "intNum1@gmail.com",
+    email: "intNum6@gmail.com",
     status: "admin"
 }
 const failedUser = {
@@ -99,13 +99,11 @@ describe('Crud api integration tests', () =>  {
             expect(putToPost.body).to.have.property('userID')
             expect(putToPost.body).to.have.property('title')
             expect(putToPost.body).to.have.property('text')
-        })
-    })
 
-    //Delete scenario
-    describe('Delete method', () => {
-        const deletePost = await request(app).del('/api/posts/51').set('Authorization', token)
-        expect(deletePost.statusCode).eq(204)
+            //Delete scenario
+            const deletePost = await request(app).del('/api/posts/35').set('Authorization', token)
+            expect(deletePost.statusCode).eq(204)
+        })
     })
 
     //Negative scenatios

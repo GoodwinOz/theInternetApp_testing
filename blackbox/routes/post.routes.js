@@ -13,6 +13,7 @@ router.post('/', async (req, res) => {
         res.status(200).json(post)
     } catch (e) {
         console.log(e)
+        res.status(500).json({ message: 'Post server error' })
     }
 })
 
@@ -23,7 +24,7 @@ router.get('/', async(req, res) => {
         res.status(200).json(post)
     } catch(e) {
         console.log(e)
-        res.status(500).json({ message: 'Server error' })
+        res.status(500).json({ message: ' GetAll server error' })
     }
 })
 
@@ -36,6 +37,7 @@ router.get('/:id', async(req, res) => {
     } catch(e) {
         // if(!post) return res.status(404).send('Post with such ID was not created')
         console.log(e)
+        res.status(500).json({ message: 'getById server error' })
     }
 })
 
@@ -49,7 +51,7 @@ router.put('/:id', async (req, res) => {
         res.status(200).json(post)
     } catch (e) {
         console.log(e)
-        // res.status(500).json({ message: 'Server error' })
+        res.status(500).json({ message: 'Put server error' })
     }
 })
 
@@ -66,7 +68,7 @@ router.delete('/:id', async (req, res) => {
        res.status(204).json({})
     } catch(e) {
         console.log(e)
-        // res.status(500).json({ message: 'Server error' })
+        res.status(500).json({ message: 'Delete server error' })
     }
 })
 
