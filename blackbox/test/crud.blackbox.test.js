@@ -5,9 +5,6 @@ let MockAdapter = require('axios-mock-adapter')
 const expect = chai.expect
 let mock = new MockAdapter(axios)
 
-//End-to-end тест в отдельную ветку.
-//User reg -> get token -> get posts/by id
-
 describe('GET functions', function() {
     beforeEach(() => {
         mock.reset()
@@ -58,7 +55,6 @@ describe('GET functions', function() {
                 expect(200)
             })
     })
-
 
     it('should return 404 user path', function() {
         mock.onGet('https://localhost:3000/api/user')

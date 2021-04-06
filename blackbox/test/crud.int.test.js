@@ -1,9 +1,7 @@
 const { expect } = require('chai')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
-const { requests } = require('sinon')
 const request = require('supertest')
-const { array } = require('../middleware/file')
 
 const app = require('../server')
 const should = chai.should()
@@ -45,16 +43,16 @@ const newTestIntPost = {
 
 describe('Crud api integration tests', () =>  {
     describe('Creating a user', () => {
-        // it('should create a user', async() => {
-        //     const newUser = await request(app).post('/api/users/register').send(newIngetrationUser)
-        //     expect(newUser.statusCode).eq(200)
-        //     expect(newUser.body).should.be.a('object')
-        //     expect(newUser.body).to.have.property('login')
-        //     expect(newUser.body).to.have.property('nameAndSurname')
-        //     expect(newUser.body).to.have.property('mobileNumber')
-        //     expect(newUser.body).to.have.property('gender')
-        //     expect(newUser.body).to.have.property('email')
-        // })
+        it('should create a user', async() => {
+            const newUser = await request(app).post('/api/users/register').send(newIngetrationUser)
+            expect(newUser.statusCode).eq(200)
+            expect(newUser.body).should.be.a('object')
+            expect(newUser.body).to.have.property('login')
+            expect(newUser.body).to.have.property('nameAndSurname')
+            expect(newUser.body).to.have.property('mobileNumber')
+            expect(newUser.body).to.have.property('gender')
+            expect(newUser.body).to.have.property('email')
+        })
         it('should not create a user because of same login', async() => {
             const creationFail = await request(app).post('/api/users/register').send(failedUser)
             expect(creationFail.statusCode).eq(400)
@@ -63,6 +61,7 @@ describe('Crud api integration tests', () =>  {
     
     describe('Postitive tests for functions requires token (POST/GET posts)', () => {
         it('should execute a process of testing token required methods', async() => {
+
             //Login method
             const userLogin = await request(app).post('/api/users/login').send(testLoginUser)
             let token = userLogin.body.token
@@ -102,12 +101,12 @@ describe('Crud api integration tests', () =>  {
             expect(putToPost.body).to.have.property('text')
         })
     })
-    //Delete scenario
-    // describe('Delete method', () => {
-    //     const deletePost = await request(app).del('/api/posts/51').set('Authorization', token)
-    //     expect(deletePost.statusCode).eq(204)
-    // })
 
+    //Delete scenario
+    describe('Delete method', () => {
+        const deletePost = await request(app).del('/api/posts/51').set('Authorization', token)
+        expect(deletePost.statusCode).eq(204)
+    })
 
     //Negative scenatios
     describe('GET /api/posts, GET all posts', () => {
@@ -141,7 +140,7 @@ describe('Crud api integration tests', () =>  {
 
 
 
-
+// Synchronous version
 
 // describe('Crud api integration tests', () =>  {
 //     //Test GET route

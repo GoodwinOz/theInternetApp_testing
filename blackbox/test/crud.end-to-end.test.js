@@ -1,8 +1,5 @@
 // Create user => get token after creation => post something to "posts" with userID => get post by id => delete post by ID
 
-//1 - 2 unit теста на один из методов без мока.
-//Переписать end-to-end в асинхронном виде
-
 const { expect } = require('chai')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
@@ -43,15 +40,15 @@ const postId = 18
 
 describe('Async e2e tests', () => {
     it('should run a process of async. testing', async() => {
-        // const resReg = await request(app).post('/api/users/register').send(newUser)
-        // expect(resReg.statusCode).eq(200)
-        // expect(resReg.body).should.be.a('object')
-        // expect(resReg.body).to.have.property('login')
-        // expect(resReg.body).to.have.property('nameAndSurname')
-        // expect(resReg.body).to.have.property('mobileNumber')
-        // expect(resReg.body).to.have.property('gender')
-        // expect(resReg.body).to.have.property('email')
-        // expect(resLogin.body).to.have.property('login').eq('e2e')
+        const resReg = await request(app).post('/api/users/register').send(newUser)
+        expect(resReg.statusCode).eq(200)
+        expect(resReg.body).should.be.a('object')
+        expect(resReg.body).to.have.property('login')
+        expect(resReg.body).to.have.property('nameAndSurname')
+        expect(resReg.body).to.have.property('mobileNumber')
+        expect(resReg.body).to.have.property('gender')
+        expect(resReg.body).to.have.property('email')
+        expect(resLogin.body).to.have.property('login').eq('e2e')
 
         const resLogin = await request(app).post('/api/users/login').send(testLoginUser)
         let token = resLogin.body.token

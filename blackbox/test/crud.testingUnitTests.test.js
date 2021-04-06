@@ -9,7 +9,7 @@ const User = require('../models/users.model')
 
 chai.use(require('sinon-chai'));
 
-//units without mocking
+//units(?) without mocking
 describe('login', async() => {
     it('should return status 200 after login', async() => {
         const res = await request(app).post('/api/users/login').send({
@@ -92,12 +92,12 @@ describe('Post routes testing', () => {
 describe('User routes', () => {
     let req = {
         body: {
-            login: "testReed",
+            login: "testReed1",
             nameAndSurname: "Test Reed",
             password: "qwerty123",
             mobileNumber: "3800001",
             gender: "male",
-            email: "test_url@gmail.com",
+            email: "test_url1@gmail.com",
             status: "admin"
         }
     }
@@ -118,7 +118,7 @@ describe('User routes', () => {
             expextedResult = req.body
             sinon.stub(User, 'create').returns(expextedResult)
             sinon.stub(User, 'destroy')
-            // await User.create()
+            await User.create()
             // sinon.assert.calledWith(User.create, req.body)
             // sinon.assert.calledWith(res.send, sinon.match({password: req.body.password}))
             // sinon.assert.calledWith(res.send, sinon.match({login: req.body.login}))
