@@ -112,7 +112,6 @@ describe('tests block', () => {
             
             let checkbox1 = await driver.findElement(By.xpath('//*[@id="checkboxes"]/input[2]'))
             await actions.doubleClick(checkbox1).perform()
-            // let checkIfPressed = await driver.findElement(By.xpath('//*[@id="checkboxes"]/input[1]'))
             
             await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="checkboxes"]/input[2]')),10000)
             await driver.findElement(By.xpath('//*[@id="checkboxes"]/input[2]')).click() 
@@ -835,6 +834,7 @@ describe('tests block', () => {
             let key2 = await driver.findElement(By.xpath('//*[@id="target"]')).getText()
 
             expect(key2).toBe('')
+
             //Result = no difference between different languages, only eng language supported
             //й is not detected by "Result" string
 
@@ -896,7 +896,7 @@ describe('tests block', () => {
     },10000)
 
     // //New window
-
+    
     describe('execute scenario of testing opening a new window', () => {//Green
         it('should open a new window after clicking a link and switch on it ', async (done) => {
 
