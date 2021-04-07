@@ -3,7 +3,7 @@ const chai = require('chai')
 const expect = require('chai').expect
 const request = require('supertest')
 
-const app = require('../server')
+// const app = require('../server') //or enter '127.0.0.1:3000' as path of routes (if there is no way to add server file)
 const Post = require('../models/post.model')
 const User = require('../models/users.model')
 
@@ -12,7 +12,7 @@ chai.use(require('sinon-chai'));
 //units(?) without mocking
 describe('login', async() => {
     it('should return status 200 after login', async() => {
-        const res = await request(app).post('/api/users/login').send({
+        const res = await request('127.0.0.1:3000').post('/api/users/login').send({
             email: "url@gmail.com",
             password: "qwerty123"
         })
@@ -23,7 +23,7 @@ describe('login', async() => {
 
 describe('get users', () => {
     it('should return status 200 after login', async() => {
-        const res = await request(app).get('/api/users')
+        const res = await request('127.0.0.1:3000').get('/api/users')
         expect(res.statusCode).eq(200)
     })
 })
