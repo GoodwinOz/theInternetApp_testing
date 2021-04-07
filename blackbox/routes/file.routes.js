@@ -14,7 +14,7 @@ router.post('/', uploadFile.single('file'), async (req, res) => {
         res.status(200).json(upload)
     } catch (e) {
         console.log(e)
-        // res.status(500).json({ message: 'Server error' })
+        res.status(500).json({ message: 'Server error in process of uploading file' })
     }
 })
 

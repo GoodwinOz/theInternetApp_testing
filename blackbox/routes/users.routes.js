@@ -35,6 +35,7 @@ router.post('/register', async (req, res) => {
         res.status(200).json(user)
     } catch (e) {
         console.log(e)
+        res.status(500).json({ message: 'Server error in proceff of user creation' })
     }
     
 })
@@ -48,7 +49,6 @@ router.post('/login', async(req, res) => {
         email: req.body.email
         }
     })
-    // console.log(users)
     const userData = { id: users.id, email: users.email, login: users.login }
 
     try {
@@ -67,6 +67,7 @@ router.post('/login', async(req, res) => {
         }
     } catch(e) {
         console.log(e)
+        res.status(500).json({ message: 'Server error in process of user login' })
     }
 })
 
@@ -78,7 +79,7 @@ router.get('/', async(req, res) => {
         res.status(200).json(user)
     } catch(e) {
         console.log(e)
-        // res.status(500).json({ message: 'Server error' })
+        res.status(500).json({ message: 'Server error in process of users.findAll' })
     }
 })
 
@@ -102,7 +103,7 @@ router.put('/:id', async (req, res) => {
         res.status(200).json({user})
     } catch (e) {
         console.log(e)
-        // res.status(500).json({ message: 'Server error' })
+        res.status(500).json({ message: 'Server error shile changing user info (router.put)' })
     }
 })
 
@@ -119,7 +120,7 @@ router.delete('/:id', async (req, res) => {
        res.status(204).json({message: `User with ID = ${user.id} was destroyed`})
     } catch(e) {
         console.log(e)
-        // res.status(500).json({ message: 'Server error' })
+        res.status(500).json({ message: 'Server error while deleting a user' })
     }
 })
 
@@ -154,9 +155,8 @@ router.get('/:id', async(req, res) => {
         }
     } catch(e) {
         console.log(e)
+        res.status(500).json({ message: 'Server error while getting a user by id' })
     }
 })
-
-
 
 module.exports = router

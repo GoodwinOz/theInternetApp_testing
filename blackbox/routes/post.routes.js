@@ -31,7 +31,7 @@ router.get('/', async(req, res) => {
 // Post findById
 router.get('/:id', async(req, res) => {
     try {
-        console.log('REQ PARAM ID', req.params.id) //DEBUG console
+        // console.log('REQ PARAM ID', req.params.id) //DEBUG console
         const post = await Posts.findByPk(+req.params.id)
         res.status(200).json(post)
     } catch(e) {

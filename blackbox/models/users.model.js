@@ -32,10 +32,6 @@ const users = sequelize.define('Users', {
     email: {
         type: Sequelize.STRING,
         allowNull: false
-        // unique: {
-        //     args: true,
-        //     msg: "Email is already in use"
-        // }
     },
     status: {
         type: Sequelize.STRING,
