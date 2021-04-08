@@ -60,7 +60,7 @@ describe('Crud api integration tests', () =>  {
     })
     
     describe('Postitive tests for functions requires token (POST/GET posts)', () => {
-        it('should execute a process of testing token required methods', async() => {
+        it.skip('should execute a process of testing token required methods', async() => {
 
             //Login method
             const userLogin = await request(app).post('/api/users/login').send(testLoginUser)

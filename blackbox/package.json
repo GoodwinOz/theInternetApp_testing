@@ -7,7 +7,7 @@
     "start": "nodemon server.js",
     "dev": "nodemon esm.js",
     "test": "mocha -R nyan",
-    "test:unit": "mocha ./test/crud.unit.test.js -R nyan",
+    "test:unit": "mocha ./routes/unit.test.js -R nyan",
     "test:int": "mocha ./test/crud.int.test.js -R nyan",
     "test:blackbox": "mocha ./test/crud.blackbox.test.js -R nyan",
     "test:blackbox:jest": "jest ./test/crud.blackbox.test.js",
