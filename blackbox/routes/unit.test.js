@@ -1,3 +1,7 @@
+//Ui тесты для blizzard (e2e) "походить по хедеру", залогиниться, изменить что-то в опциях, вылогиниться.
+//blackbox e2e тесты (flase positive) Проверить асинхронность.
+//При наличии ошибки с портом - разобраться 
+
 const jest = require('jest')
 const mocha = require('mocha')
 const sinon = require('sinon')
