@@ -5,4 +5,5 @@ blackbox/test/crud.end-to-end.test.js
 blackbox/config/config.json
 theInternet.tests/node_modules
 blackbox/seeders
+uploads
 .env
