@@ -5,6 +5,7 @@
   "main": "internet.test.js",
   "scripts": {
     "test": "jest internet.test.js",
+    "test:pageObj": "jest internet.pageObject.test.js",
     "test:auth": "npm run test -- -t '#auth'",
     "test:download": "npm run test -- -t '#download'",
     "test:debug": "node --inspect node_modules/.bin/jest --watch --runInBand internet.test.js",
