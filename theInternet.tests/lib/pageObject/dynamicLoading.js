@@ -6,7 +6,10 @@ let BasePage = require('./basePage')
  * @type {string}
  */
 
-const 
+const firstLink = locators.dynamicLoadingFirstLink,
+      startBtn = locators.dynamicLoadingStartBtn,
+      textField = locators.dynamicLoadingFinishTextId,
+      secondLink = locators.dynamicLoadingSecondLink
 
 /**
  * Constructor for Login Page
@@ -27,11 +30,33 @@ DyanamicLoading.prototype.constructor = DyanamicLoading
  */
 
 
- DyanamicLoading.prototype.checkboxDoubleClick = async function() {
-    let checkboxCss = await this.findByCss(checkbox)
-    let doubleClick = await this.doubleClick(checkboxCss)
-    return doubleClick
+DyanamicLoading.prototype.clickOnFirstLink = async function() {
+    let link = await this.findByXpath(firstLink)
+    let click = await link.click()
+    return click
 }
+
+DyanamicLoading.prototype.clickOnBtn = async function() {
+    let link = await this.findByXpath(startBtn)
+    let click = await link.click()
+    return click
+}
+
+DyanamicLoading.prototype.getFinishText = async function() {
+    let link = await this.findById(textField)
+    await this.elementIsDisplayed(link)
+    let getText = await link.getText()
+    return getText
+}
+
+DyanamicLoading.prototype.clickOnSecondLink = async function() {
+    let link = await this.findByXpath(secondLink)
+    let click = await link.click()
+    return click
+}
+
+
+
 
 
 module.exports = DyanamicLoading

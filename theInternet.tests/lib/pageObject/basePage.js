@@ -59,6 +59,22 @@ function BasePage(webdriver) {
         }
         return isElementVisible
     }
+
+    this.elementIsDisplayed = async function(locator) {
+        let isElementDisplayed = await locator.getCssValue("height")
+        while(!(isElementDisplayed)) {
+            return await driver.wait(until.elementIsDisplayed(locator), 10000)
+        }
+        return isElementDisplayed
+    }
+
+    this.goToPreviousPage = async function() {
+        return await driver.executeScript("window.history.go(-1)")
+    }
+
+    this.getUrl = async function() {
+        return await driver.getCurrentUrl()
+    }
 }
 
 module.exports = BasePage

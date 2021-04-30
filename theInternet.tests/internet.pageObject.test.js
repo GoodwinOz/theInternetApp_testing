@@ -17,6 +17,8 @@ const DropdownMenu = require('./lib/pageObject/dropdownMenu')
 const DyanmicContent = require('./lib/pageObject/dynamicContent')
 const DyanamicElements = require('./lib/pageObject/dynamicElements')
 const DynamicLoading = require('./lib/pageObject/dynamicLoading')
+const EntryAd = require('./lib/pageObject/entryAd')
+const FloatingMenu = require('./lib/pageObject/floatingMenu')
 
 
 //Chrome capabilities for testing download functions
@@ -177,48 +179,6 @@ describe('tests block', () => {
     // //Disappearing Elements
     // // .only - единичный запуск теста  .skip - пропуск теста (единичного)
     describe('execute testing scenario of moving mouse pointer on various elements', () => { //Green (Detectiong *gallery element* - commentet)
-        it('should highlight various elements', async (done) => {
-            jest.setTimeout(10000)
-
-            await driver.get(mainUrl + 'disappearing_elements')
-
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/ul/li[1]/a')))
-
-            let homeElement = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[1]/a'))
-            let homeElementName = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[1]/a')).getText()
-            await driver.actions().move({ origin: homeElement }).perform()
-            expect(homeElementName).toContain('Home')
-
-            let aboutElement = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[2]'))
-            let aboutElementName = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[2]')).getText()
-            await driver.actions().move({ origin: aboutElement }).perform()
-            expect(aboutElementName).toBe('About')
-
-            let contactElement = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[3]/a'))
-            let contactElementName = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[3]/a')).getText()
-            await driver.actions().move({ origin: contactElement }).perform()
-            expect(contactElementName).toBe('Contact Us')
-
-            let portfolioElement = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[4]/a'))
-            let portfolioElementName = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[4]/a')).getText()
-            await driver.actions().move({ origin: portfolioElement }).perform()
-            expect(portfolioElementName).toBe('Portfolio')
-
-            //Getting error while there is no *Gallery* element
-            // if (!await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[5]/a'))) {
-            //     done()
-            // } else if (await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[5]/a'))) {
-            //     let WaitingForGalleryElementToBeVisible = await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/ul/li[5]/a')))
-            //     let galleryElement = driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[5]/a'))
-            //     if(!WaitingForGalleryElementToBeVisible) {
-            //         expect(!WaitingForGalleryElementToBeVisible)
-            //     } else if (WaitingForGalleryElementToBeVisible) {
-            //         await driver.actions().move({origin: galleryElement}).perform()
-            //         expect(WaitingForGalleryElementToBeVisible)
-            //     }
-            // }
-            done()
-        }, 10000)
         it('should highlight various elements with pageObject pattern', async (done) => {
             disappearingElements = new DisappearingElements(driver)
             const url = locators.disappearinElemUrl
@@ -316,8 +276,8 @@ describe('tests block', () => {
 
     //Dynamic controls
 
-    describe.only('execute scenario of testing dynamic controls', () => { //Green
-        it.only('should dynamically enable and disable elements on the page using pageObject pattern', async (done) => {
+    describe('execute scenario of testing dynamic controls', () => { //Green
+        it('should dynamically enable and disable elements on the page using pageObject pattern', async (done) => {
             dynamicElements = new DyanamicElements(driver)
             const url = locators.dynamicElementsUrl
             await driver.get(url)
@@ -341,90 +301,59 @@ describe('tests block', () => {
     // Dynamically loaded elements
 
     describe('execute scenario of testing dynamically loaded elements and pages', () => { //Green
-        it('should dynamically test elements on opened pages', async (done) => {
-            await driver.get(mainUrl + 'dynamic_loading')
-
-            //Click on first link
-            await driver.findElement(By.xpath('//*[@id="content"]/div/a[1]')).click() //Or use: await driver.get('https://the-internet.herokuapp.com/dynamic_loading/1')
-
-            //Initiate
-            await driver.findElement(By.xpath('//*[@id="start"]/button')).click()
-            await driver.sleep(5500)
-            await driver.wait(webdriver.until.elementLocated(By.id('finish')), 10000)
-            let helloMsg = await driver.findElement(By.id('finish')).getText()
-
-            //Check if hidden element (message) is displayed
-            expect(helloMsg).toBe('Hello World!')
-
-            //Back to main page
-            await driver.executeScript("window.history.go(-1)");
-
-            //Click on second limk
-            await driver.findElement(By.xpath('//*[@id="content"]/div/a[2]')).click() //Or use: await driver.get('https://the-internet.herokuapp.com/dynamic_loading/2')
-
-            //Initiate
-            await driver.findElement(By.xpath('//*[@id="start"]/button')).click()
-
-            await driver.wait(webdriver.until.elementLocated(By.id('finish')), 10000)
-            let helloMsg2 = await driver.findElement(By.id('finish')).getText()
-            //Check if hidden message is displayed       
-            expect(helloMsg2).toBe('Hello World!')
-
-            await driver.executeScript("window.history.go(-1)");
-
-            done()
-        }, 15000)
         it('should dynamically test elements on opened pages with pageObjects', async (done) => {
             dynamicLoading = new DynamicLoading(driver)
             const url = locators.dynamicLoadingUrl
             await driver.get(url)
 
-            
-        })
-    })
+            await dynamicLoading.clickOnFirstLink()
+            await dynamicLoading.clickOnBtn()
+            await driver.sleep(5500)
+            let finishMsg = await dynamicLoading.getFinishText()
+            expect(finishMsg).toContain('Hello World!')
+
+            await dynamicLoading.goToPreviousPage()
+
+            await dynamicLoading.clickOnSecondLink()
+            await dynamicLoading.clickOnBtn()
+            let secondFinishMsg = await dynamicLoading.getFinishText()
+            expect(secondFinishMsg).toContain('Hello World!')
+
+            done()
+        }, 20000)
+    }, 15000)
 
     // //Entry Ad
 
     describe('execute scenario of testing a modal window functions', () => {//Green
-        it('should validate modal window info and reopen it', async (done) => {
+        it('should validate modal window info and reopen it with pageObjects', async(done) => {
+            entryAd = new EntryAd(driver)
+            const url = locators.entryAdUrl
+            const titleText = locators.entryAdWindowTitleText
+            const bodyText = locators.entryAdWindowBodyText
 
-            await driver.get(mainUrl + 'entry_ad')
+            await driver.get(url)
 
-            //Get text from alert window title & body
-            await driver.sleep(1500)
+            await driver.sleep(1300)
 
-            await driver.wait(webdriver.until.elementLocated(By.xpath('/html/body/div[2]/div/div[2]/div[2]/div[3]/p')))
+            let getTitle = await entryAd.getAlertTitleText()
+            let getBodyText = await entryAd.getAlertBodyText()
+            expect(getTitle).toContain(titleText)
+            expect(getBodyText).toContain(bodyText)
+            await entryAd.closeAlertWindow()
 
-            let windowTitle = await driver.findElement(By.xpath('//*[@id="modal"]/div[2]/div[1]')).getText()
-            let windowBody = await driver.findElement(By.xpath('//*[@id="modal"]/div[2]/div[2]')).getText()
+            await entryAd.restartPage()
 
-            //Validate if text in title & body meets expectations
-            expect(windowTitle).toBe('THIS IS A MODAL WINDOW')
-            expect(windowBody).toBe("It's commonly used to encourage a user to take an action (e.g., give their e-mail address to sign up for something or disable their ad blocker).")
+            await driver.sleep(1300)
 
-            //Closing alert window
-            await driver.wait(webdriver.until.elementLocated(By.css('#modal > div.modal > div.modal-footer > p')), 10000)
-            await driver.findElement(By.css('#modal > div.modal > div.modal-footer > p')).click()
-
-            //Restarting page
-            await driver.wait(webdriver.until.elementLocated(By.css('#restart-ad')), 10000)
-            await driver.findElement(By.css('#restart-ad')).click()
-
-            //Closing alert window againg to ensure that all is ok
-            await driver.sleep(1500)
-            await driver.wait(webdriver.until.elementLocated(By.xpath('/html/body/div[2]/div/div[2]/div[2]/div[3]/p')), 10000)
-            let windowTitleAfterRestart = await driver.findElement(By.css('#modal > div.modal > div.modal-title > h3')).getText()
-            let windowBodyAfterRestart = await driver.findElement(By.css('#modal > div.modal > div.modal-body > p')).getText()
-
-            //Validating window info after restart
-            expect(windowTitleAfterRestart).toBe('THIS IS A MODAL WINDOW')
-            expect(windowBodyAfterRestart).toBe("It's commonly used to encourage a user to take an action (e.g., give their e-mail address to sign up for something or disable their ad blocker).")
-
-            //Closing window after restart
-            await driver.findElement(By.xpath('/html/body/div[2]/div/div[2]/div[2]/div[3]/p')).click()
+            let getTitleAfterRestart = await entryAd.getAlertTitleText()
+            let getBodyTextAfterRestart = await entryAd.getAlertBodyText()
+            expect(getTitleAfterRestart).toContain(titleText)
+            expect(getBodyTextAfterRestart).toContain(bodyText)
+            await entryAd.closeAlertWindow()
 
             done()
-        }, 15000)
+        })
     })
 
     // // Exit intent
@@ -513,44 +442,34 @@ describe('tests block', () => {
     // //Scroll by combination: ctrl + end; arrow down; actions.move()
 
     describe('execute scenario of testing a floating menu', () => { //Green
-        it('should scroll down and click on floating menu bar', async (done) => {
+        it('should scroll down and click on floating menu bar with pageObject', async(done) => {
+            floatingMenu = new FloatingMenu(driver)
+            const url = locators.floatingMenuUrl
 
-            await driver.get(mainUrl + 'floating_menu')
+            await driver.get(url)
 
-            //Scroll page down
+            let defaultUrl = await floatingMenu.getUrl()
+            await floatingMenu.scrollDown()
+            
+            await floatingMenu.clickOnHome()
+            let homeUrl = await floatingMenu.getCurrentUrl()
+            expect(homeUrl).not.toEqual(defaultUrl)
 
-            let anchor = await driver.findElement(By.xpath('//*[@id="content"]/div/div[2]/div/p[6]'))
-            const actions = driver.actions({ async: true })
+            await floatingMenu.clickOnNews()
+            let newsUrl = await floatingMenu.getCurrentUrl()
+            expect(newsUrl).not.toEqual(defaultUrl)
 
-            await actions.move({ origin: anchor }).perform()
+            await floatingMenu.clickOnContacts()
+            let contactUrl = await floatingMenu.getCurrentUrl()
+            expect(contactUrl).not.toEqual(defaultUrl)
 
-            let url = await driver.getCurrentUrl()
-
-            await driver.findElement(By.xpath('//*[@id="menu"]/ul/li[1]/a')).click()
-            let homeUrl = await driver.getCurrentUrl()
-            expect(url).not.toEqual(homeUrl)
-
-            await driver.findElement(By.xpath('//*[@id="menu"]/ul/li[2]/a')).click()
-            let newsUrl = await driver.getCurrentUrl()
-            expect(url).not.toEqual(newsUrl)
-            // expect(url).toEqual(url + '#news')
-
-            await driver.findElement(By.xpath('//*[@id="menu"]/ul/li[3]/a')).click()
-            let contactUrl = await driver.getCurrentUrl()
-            expect(url).not.toEqual(contactUrl)
-            // expect(url).toEqual(url + '#contact')
-
-            await driver.findElement(By.xpath('//*[@id="menu"]/ul/li[4]/a')).click()
-            let aboutUrl = await driver.getCurrentUrl()
-            expect(url).not.toEqual(aboutUrl)
-            // expect(url).toEqual(url + '#about')
-
-            //Alternative
-            // await driver.findElement(By.css('body')).sendKeys(Key.CONTROL, Key.END) 
+            await floatingMenu.clickOnAbout()
+            let aboutUrl = await floatingMenu.getCurrentUrl()
+            expect(aboutUrl).not.toEqual(defaultUrl)
 
             done()
         }, 10000)
-    })
+    }, 10000)
 
 
     // //Forgot password

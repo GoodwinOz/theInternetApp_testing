@@ -40,5 +40,25 @@ module.exports = {
     dynamicElementsInputBtn: '/html/body/div[2]/div/div[1]/form[2]/button',
     dynamicElementsEnableMsg: '/html/body/div[2]/div/div[1]/form[2]/p',
     dynamicElementsInputField: '//*[@id="input-example"]/input',
-        
+    //Dynamic loaded elements
+    dynamicLoadingUrl: mainUrl + 'dynamic_loading',
+    dynamicLoadingFirstLink: '//*[@id="content"]/div/a[1]',
+    dynamicLoadingStartBtn: '//*[@id="start"]/button',
+    dynamicLoadingFinishTextId: 'finish',
+    dynamicLoadingSecondLink: '//*[@id="content"]/div/a[2]',
+    //Entry Ad
+    entryAdUrl: mainUrl + 'entry_ad',
+    entryAdWindowTitle: '//*[@id="modal"]/div[2]/div[1]',
+    entryAdWindowBody: '//*[@id="modal"]/div[2]/div[2]',
+    entryAdWindowBodyText: "It's commonly used to encourage a user to take an action (e.g., give their e-mail address to sign up for something or disable their ad blocker).",
+    entryAdCloseAlertBtnCss: '#modal > div.modal > div.modal-footer > p',
+    entryAdCloseRestartPageCss: '#restart-ad',
+    entryAdWindowTitleText: 'THIS IS A MODAL WINDOW',
+    //Floating Menu
+    floatingMenuUrl: mainUrl + 'floating_menu',
+    floatingMenuBottomElement: '//*[@id="content"]/div/div[2]/div/p[6]',
+    floatingMenuHomeBtn: '//*[@id="menu"]/ul/li[1]/a',
+    floatingMenuNewsBtn: '//*[@id="menu"]/ul/li[2]/a',
+    floatingMenuContactBtn: '//*[@id="menu"]/ul/li[3]/a',
+    floatingMenuAboutBtn: '//*[@id="menu"]/ul/li[4]/a',
 }
