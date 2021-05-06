@@ -55,6 +55,13 @@ function BasePage(webdriver) {
     this.elementIsVisible = async function(locator) {
         let isElementVisible = await locator.getCssValue("height")
         while(!(isElementVisible)) {
+            return await driver.wait(until.elementIsVisible(locator), 10000)
+        }
+        return isElementVisible
+    }
+    this.elementIsEnabled = async function(locator) {
+        let isElementVisible = await locator.getCssValue("height")
+        while(!(isElementVisible)) {
             return await driver.wait(until.elementIsEnabled(locator), 10000)
         }
         return isElementVisible
@@ -75,6 +82,34 @@ function BasePage(webdriver) {
     this.getUrl = async function() {
         return await driver.getCurrentUrl()
     }
+
+    this.firstFrame = async function() {
+        return await driver.switchTo().frame(1)
+    }
+
+    this.acceptAlert = async function() {
+        await driver.wait(until.alertIsPresent)
+        return await driver.switchTo().alert().accept()
+    }
+    
+    this.dismissAlert = async function() {
+        await driver.wait(until.alertIsPresent)
+        return await driver.switchTo().alert().dismiss()
+    }
+
+    this.waitForAlert = async function() {
+        return await driver.wait(until.alertIsPresent())
+    }
+
+    this.getElementText = async function(element) {
+        let elementPath = await driver.findElement(By.xpath(element))
+        return await elementPath.getText() 
+    }
+
+    this.switchToFrame = async function(frame) {
+        return await driver.switchTo().frame(driver.findElement(By.id(frame)))
+    }
+    
 }
 
 module.exports = BasePage

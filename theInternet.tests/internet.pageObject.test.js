@@ -19,6 +19,21 @@ const DyanamicElements = require('./lib/pageObject/dynamicElements')
 const DynamicLoading = require('./lib/pageObject/dynamicLoading')
 const EntryAd = require('./lib/pageObject/entryAd')
 const FloatingMenu = require('./lib/pageObject/floatingMenu')
+const LoginPage = require('./lib/pageObject/loginPage')
+const Frames = require('./lib/pageObject/frames')
+const Slider = require('./lib/pageObject/slider')
+const Hovers = require('./lib/pageObject/hovers')
+const Inputs = require('./lib/pageObject/inputs')
+const JqueryUI = require('./lib/pageObject/jqueryobj')
+const Alerts = require('./lib/pageObject/alerts')
+const KeyPresses = require('./lib/pageObject/keyPresses')
+const DomPage = require('./lib/pageObject/dom')
+const Redirection = require('./lib/pageObject/redirection')
+const ShadowDom = require('./lib/pageObject/shadowDom')
+const Shifting = require('./lib/pageObject/shifting')
+const Typos = require('./lib/pageObject/typos')
+const Editor = require('./lib/pageObject/editor')
+
 
 
 //Chrome capabilities for testing download functions
@@ -36,22 +51,22 @@ let mainUrl = 'https://the-internet.herokuapp.com/'
 
 
 
-it('should check a validation of input data to auth alert box', async (done) => {
-    basicAuthPage = new BasicAuthPage(driver)
-    const url = locators.basicAuthUrl,
-        expectedLoginText = locators.expectedLoginText
+// it('should check a validation of input data to auth alert box', async (done) => {
+//     basicAuthPage = new BasicAuthPage(driver)
+//     const url = locators.basicAuthUrl,
+//         expectedLoginText = locators.expectedLoginText
 
-    await driver.get(url)
-    await driver.sleep(3000)
+//     await driver.get(url)
+//     await driver.sleep(3000)
 
-    const getTitle = await basicAuthPage.getTitle();
-    expect(getTitle).toContain('The Internet');
+//     const getTitle = await basicAuthPage.getTitle();
+//     expect(getTitle).toContain('The Internet');
 
-    const loginText = await basicAuthPage.findLoginTextCss()
-    expect(loginText).toContain(expectedLoginText)
+//     const loginText = await basicAuthPage.findLoginTextCss()
+//     expect(loginText).toContain(expectedLoginText)
 
-    done()
-})
+//     done()
+// })
 
 
 describe('tests block', () => {
@@ -68,7 +83,7 @@ describe('tests block', () => {
         it('should check a validation of input data to auth alert box', async (done) => {
             basicAuthPage = new BasicAuthPage(driver)
             const url = locators.basicAuthUrl,
-                expectedLoginText = locators.expectedLoginText
+                  expectedLoginText = locators.expectedLoginText
 
             await driver.get(url)
 
@@ -202,13 +217,13 @@ describe('tests block', () => {
 
             done()
         }, 15000)
-    })
+    }, 15000)
 
     // // Drag and drop
 
     describe('execute testing scenario of using drag and drop', () => { //Green
         //Drag&drop by coordinates of displayed element ()
-        it('should drag element "a" to position, where element "b" located', async (done) => {
+        it.skip('should drag element "a" to position, where element "b" located', async (done) => {
 
             await driver.get(mainUrl + 'drag_and_drop')
 
@@ -235,7 +250,7 @@ describe('tests block', () => {
 
             done()
         }, 7000)
-    })
+    }, 10000)
 
     // //Dropdown List
 
@@ -326,7 +341,7 @@ describe('tests block', () => {
     // //Entry Ad
 
     describe('execute scenario of testing a modal window functions', () => {//Green
-        it('should validate modal window info and reopen it with pageObjects', async(done) => {
+        it('should validate modal window info and reopen it with pageObjects', async (done) => {
             entryAd = new EntryAd(driver)
             const url = locators.entryAdUrl
             const titleText = locators.entryAdWindowTitleText
@@ -442,7 +457,7 @@ describe('tests block', () => {
     // //Scroll by combination: ctrl + end; arrow down; actions.move()
 
     describe('execute scenario of testing a floating menu', () => { //Green
-        it('should scroll down and click on floating menu bar with pageObject', async(done) => {
+        it('should scroll down and click on floating menu bar with pageObject', async (done) => {
             floatingMenu = new FloatingMenu(driver)
             const url = locators.floatingMenuUrl
 
@@ -450,7 +465,7 @@ describe('tests block', () => {
 
             let defaultUrl = await floatingMenu.getUrl()
             await floatingMenu.scrollDown()
-            
+
             await floatingMenu.clickOnHome()
             let homeUrl = await floatingMenu.getCurrentUrl()
             expect(homeUrl).not.toEqual(defaultUrl)
@@ -494,32 +509,25 @@ describe('tests block', () => {
     // //Login Page
 
     describe('execute scenario of testing login & logout functions', () => { //Green
-        it('should input a valid username & pass -> check if logged in -> log out -> check if logged out; #auth', async (done) => {
+        it('should input a valid username & pass -> check if logged in -> log out -> check if logged out with page object; #auth', async (done) => {
+            loginPage = new LoginPage(driver)
+            const url = locators.loginPageUrl
 
-            await driver.get(mainUrl + 'login')
+            await driver.get(url)
 
-            //Enter username & pass
-            await driver.findElement(By.id('username')).sendKeys('tomsmith')
-
-            await driver.findElement(By.id('password')).sendKeys('SuperSecretPassword!')
-
-            //Click login
-            await driver.findElement(By.xpath('//*[@id="login"]/button')).click()
-
-            //Verify if logged in
-            let title = await driver.findElement(By.xpath('//*[@id="content"]/div/h2')).getText()
-            expect(title).toBe('Secure Area')
-
-            //Click logout
-            await driver.findElement(By.xpath('//*[@id="content"]/div/a')).click()
-
-            //Verify if logged out
-            let title2 = await driver.findElement(By.xpath('//*[@id="content"]/div/h2')).getText()
-            expect(title2).toBe('Login Page')
+            await loginPage.inputLogin()
+            await loginPage.inputPassword()
+            await loginPage.clickLogin()
+            let loginVerification = await loginPage.verifyIfLogin()
+            await driver.sleep(1500)
+            expect(loginVerification).toContain('Secure Area')
+            await loginPage.logout()
+            let logoutVerification = await loginPage.verifyIfLogout()
+            expect(logoutVerification).toContain('Login Page')
 
             done()
         }, 10000)
-    })
+    }, 15000)
 
     // //Frames
 
@@ -550,6 +558,33 @@ describe('tests block', () => {
 
             done()
         }, 10000)
+        // it('should check frames on few pages with pageObjects', async (done) => {
+        //     frames = new Frames(driver)
+        //     const url = locators.framesUrl
+        //     const firstUrl = 'https://the-internet.herokuapp.com/nested_frames'
+
+        //     await driver.get(url)
+
+        //     await driver.get(firstUrl)
+
+        //     // await frames.clickFirstLink()
+
+        //     await driver.switchTo().frame(1)
+
+        //     let expectedText = await frames.getBodyText()
+        //     expect(expectedText).toContain('BOTTOM')
+
+        //     await frames.backToHomePage()
+
+        //     await frames.goToSecondLink()
+
+        //     await frames.sendKeysToInput()
+
+        //     let validation = await frames.validateInputedText()
+        //     expect(validation).toContain('Test Keys')
+
+        //     done()
+        // })
     })
 
     // //Geolocation (Skipped); reason: no need to give geo.data
@@ -557,58 +592,57 @@ describe('tests block', () => {
     // //Horizontal slider
 
     describe('execute scenario of testing a horizontal slider', () => { //Green 
-        it('should slide a slider for generating a diffetent values', async (done) => {
+        it('should slide a slider for generating a diffetent values with page object', async (done) => {
+            slider = new Slider(driver)
+            const url = locators.sliderUrl
 
-            await driver.get(mainUrl + 'horizontal_slider')
+            await driver.get(url)
 
-            //Sending *right arrow* keys
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/input')).sendKeys(Key.ARROW_RIGHT, Key.ARROW_RIGHT, Key.ARROW_RIGHT)
-            let sliderValue = await driver.findElement(By.xpath('//*[@id="range"]')).getText()
-            expect(sliderValue).toEqual('1.5')
+            let firstInput = await slider.getInputElement()
+            await firstInput.sendKeys(Key.ARROW_RIGHT, Key.ARROW_RIGHT, Key.ARROW_RIGHT)
 
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/input')).sendKeys(Key.ARROW_LEFT, Key.ARROW_RIGHT, Key.ARROW_RIGHT)
-            let secondSliderValue = await driver.findElement(By.xpath('//*[@id="range"]')).getText()
-            expect(secondSliderValue).toEqual('2')
+            let firstValue = await slider.getValue()
+            expect(firstValue).toBe('1.5')
+
+            let secondInput = await slider.getInputElement()
+            await secondInput.sendKeys(Key.ARROW_RIGHT, Key.ARROW_RIGHT, Key.ARROW_RIGHT)
+
+            let secondValue = await slider.getValue()
+            expect(secondValue).toBe('3')
 
             done()
         }, 10000)
-    })
+    }, 10000)
 
     // //Hovers
 
     describe('execute scenario of testing a hover elements', () => { //Green
-        it('should place a cursor on each element; information of each element should be displayed', async (done) => {
+        it('should place a cursor on each element; information of each element should be displayed with page object', async (done) => {
+            hovers = new Hovers(driver)
+            const url = locators.hoversUrl
 
-            const actions = driver.actions({ async: true })
-            await driver.get(mainUrl + 'hovers')
+            await driver.get(url)
 
-            //Getting anchors
-            let userImage0 = await driver.findElement(By.xpath('//*[@id="content"]/div/div[1]/img'))
-            let userImage1 = await driver.findElement(By.xpath('//*[@id="content"]/div/div[2]/img'))
-            let userImage2 = await driver.findElement(By.xpath('//*[@id="content"]/div/div[3]/img'))
+            await hovers.moveToUser1()
+            let firstUserName = await hovers.getUser1Name()
+            expect(firstUserName).toContain('name: user1')
 
-            await actions.move({ origin: userImage0 }).perform()
-            await driver.wait(webdriver.until.elementLocated(By.xpath('/html/body/div[2]/div/div/div[1]/div/h5')))
-            let userName1 = await driver.findElement(By.xpath('/html/body/div[2]/div/div/div[1]/div/h5')).getText()
-            expect(userName1).toEqual('name: user1')
+            await hovers.moveToUser2()
+            let secondUserName = await hovers.getUser2Name()
+            expect(secondUserName).toContain('name: user2')
 
-            await actions.move({ origin: userImage1 }).perform()
-            let userName2 = await driver.findElement(By.xpath('/html/body/div[2]/div/div/div[2]/div/h5')).getText()
-            expect(userName2).toEqual('name: user2')
-
-            //Before moving to *anchor3*, coming back to ele.1, moving to ele.2, then - to ele.3
-            await actions.move({ origin: userImage2 }).perform()
-            let userName3 = await driver.findElement(By.xpath('/html/body/div[2]/div/div/div[3]/div/h5')).getText()
-            expect(userName3).toEqual('name: user3')
+            await hovers.moveToUser3()
+            let thirdUserName = await hovers.getUser3Name()
+            expect(thirdUserName).toContain('name: user3')
 
             done()
         }, 10000)
-    })
+    }, 10000)
 
     // //Infinite scroll
 
     describe('execute scenario of testing an infinite scroll', () => { //Green
-        it('should scroll a webpage', async (done) => {
+        it.skip('should scroll a webpage', async (done) => {
 
             await driver.get(mainUrl + 'infinite_scroll')
 
@@ -624,150 +658,102 @@ describe('tests block', () => {
     // //Inputs
 
     describe('execute scenario of testing input number function', () => { //Green
-        it('should input a positive number, negative number, +# to number, -# to number', async (done) => {
+        it('should input a positive number, negative number, +# to number, -# to number with page object', async (done) => {
+            //Refactored variant
+            inputs = new Inputs(driver)
+            const url = locators.inputsUrl
 
-            await driver.get(mainUrl + 'inputs')
+            await driver.get(url)
 
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys('10')
+            let inputString = await driver.findElement(By.xpath(locators.inputsInputString))
+
+            await inputString.sendKeys('10')
 
             // await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys(Key.CONTROL, 'a', '-10') //Value invorrect
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys(Key.CONTROL, 'a')
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys('-10')
+            await inputString.sendKeys(Key.CONTROL, 'a')
+            await inputString.sendKeys('-10')
+            await inputString.sendKeys(Key.CONTROL, 'a')
+            await inputString.sendKeys('100')
+            await inputString.sendKeys(Key.CONTROL, 'a')
+            await inputString.sendKeys('-100')
+            await inputString.sendKeys(Key.CONTROL, 'a')
+            await inputString.sendKeys('0')
+            await inputString.sendKeys(Key.ARROW_UP)
 
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys(Key.CONTROL, 'a')
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys('100')
-
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys(Key.CONTROL, 'a')
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys('-100')
-
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys(Key.CONTROL, 'a')
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys('0')
-
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys(Key.ARROW_UP)
-
-            // Numbers can't be readed from input field
-            // let numberAfterPushingButton = await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).getText()
-            // expect(numberAfterPushingButton).toEqual('1')
-
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys(Key.ARROW_DOWN)
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).sendKeys('asdasd')
-            let notValidText = await driver.findElement(By.xpath('//*[@id="content"]/div/div/div/input')).getText()
+            await inputString.sendKeys(Key.ARROW_DOWN)
+            await inputString.sendKeys('asdasd')
+            let notValidText = await inputString.getText()
             expect(notValidText).not.toEqual('asdasd')
 
-            //Var №2 .getText(), but in this case - .getText can't be detected in inputString
-            // let numberAfterPushingAnotherButton = await driver.findElement(By.css('#content > div > div > div > input[type=number]')).getText()
-            // expect(numberAfterPushingAnotherButton).toBe('0')
-
-
             done()
-        }, 7000)
+        })
     }, 15000)
 
     // //JQuery UI menu
 
     describe('execute scenario of testing JQuery UI menu', () => { // Green
-        it('should check all menu positions/variables/buttons', async (done) => {
+        it('should check all menu positions/variables/buttons with page objects', async (done) => {
+            jquery = new JqueryUI(driver)
+            const url = locators.jqueryUrl
 
-            let actions = driver.actions({ async: true })
-            await driver.get(mainUrl + 'jqueryui/menu')
+            await driver.get(url)
 
-            //Getting anchors
-            let enabled = await driver.findElement(By.xpath('//*[@id="ui-id-3"]/a'))
-            let downloads = await driver.findElement(By.xpath('//*[@id="ui-id-4"]/a'))
-            let pdf = await driver.findElement(By.xpath('//*[@id="ui-id-5"]/a'))
-            let csv = await driver.findElement(By.xpath('//*[@id="ui-id-6"]/a'))
-            let excel = await driver.findElement(By.xpath('//*[@id="ui-id-7"]/a'))
+            await jquery.moveToEnable()
+            await driver.sleep(200)
+            let enableText = await jquery.getEnableText()
+            expect(enableText).toBe('Enabled')
 
-            //Moving to each element in menu
-            await driver.wait(webdriver.until.elementIsVisible(enabled), 10000)
-            let enabledName = await driver.findElement(By.xpath('//*[@id="ui-id-3"]/a')).getText()
-            expect(enabledName).toEqual('Enabled')
+            await jquery.moveToDownloads()
+            await driver.sleep(200)
+            let downloadsText = await jquery.getDownloadsText()
+            expect(downloadsText).toBe('Downloads')
 
-            await actions.move({ origin: enabled }).perform()
-            await driver.wait(webdriver.until.elementIsVisible(downloads), 10000)
-            let downloadsName = await driver.findElement(By.xpath('//*[@id="ui-id-4"]/a')).getText()
-            expect(downloadsName).toEqual('Downloads')
+            await jquery.moveToPdf()
+            let pdfText = await jquery.getPdfText()
+            expect(pdfText).toBe('PDF')
 
-            await actions.move({ origin: downloads }).perform()
-            await driver.wait(webdriver.until.elementIsVisible(pdf), 10000)
-            let pdfName = await driver.findElement(By.xpath('//*[@id="ui-id-5"]/a')).getText()
-            expect(pdfName).toEqual('PDF')
+            await jquery.moveToCsv()
+            let csvText = await jquery.getCsvText()
+            expect(csvText).toBe('CSV')
 
-            await actions.move({ origin: pdf }).perform()
-            await driver.wait(webdriver.until.elementIsVisible(csv), 10000)
-            let csvName = await driver.findElement(By.xpath('//*[@id="ui-id-6"]/a')).getText()
-            expect(csvName).toEqual('CSV')
+            await jquery.moveToExcel()
+            let excelText = await jquery.getExcelText()
+            expect(excelText).toBe('Excel')
 
-            await actions.move({ origin: csv }).perform()
-            await driver.wait(webdriver.until.elementIsVisible(excel), 10000)
-            let excelName = await driver.findElement(By.xpath('//*[@id="ui-id-7"]/a')).getText()
-            expect(excelName).toEqual('Excel')
-            await actions.move({ origin: excel }).perform()
-
-            //Testing "Back" menu button
-            await driver.findElement(By.xpath('//*[@id="ui-id-8"]/a')).click()
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/ul/li/a')).click()
+            await jquery.backBtnClick()
 
             done()
         }, 10000)
-    })
+    }, 10000)
 
     // //JS alerts
 
     describe('execute scenatio of testing js alerts', () => {//Green
-        test('it should test all js alerts', async (done) => {
+        it('it should test all js alerts with page Objects', async (done) => {
+            alerts = new Alerts(driver)
+            const url = locators.alertsUrl
 
-            await driver.get(mainUrl + 'javascript_alerts')
+            await driver.get(url)
 
-            //First alert
-            await driver.wait(webdriver.until.elementLocated(By.xpath('/html/body/div[2]/div/div/ul/li[1]/button')), 10000)
-            await driver.findElement(By.xpath('/html/body/div[2]/div/div/ul/li[1]/button')).click()
+            await alerts.firstAlertInit()
+            let firstValidation = await alerts.verifyResult()
+            expect(firstValidation).toBe('You successfully clicked an alert')
 
-            //Accepting alert
-            await driver.wait(webdriver.until.alertIsPresent)
-            await driver.switchTo().alert().accept()
+            await alerts.secondAlertAccept()
+            let secondValidation = await alerts.verifyResult()
+            expect(secondValidation).toBe('You clicked: Ok')
 
-            //Veryfi if result is valid
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="result"]')), 10000)
-            let result = await driver.findElement(By.xpath('//*[@id="result"]')).getText()
-            expect(result).toBe('You successfully clicked an alert')
+            await alerts.secondAlertDismiss()
+            let secondValidationDismiss = await alerts.verifyResult()
+            expect(secondValidationDismiss).toBe('You clicked: Cancel')
 
-            //Second alert
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/ul/li[2]/button')), 10000)
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[2]/button')).click()
-
-            await driver.wait(webdriver.until.alertIsPresent)
-            await driver.switchTo().alert().accept()
-
-            //Verify if result after acception is valid
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="result"]')), 10000)
-            let resultOk = await driver.findElement(By.xpath('//*[@id="result"]')).getText()
-            expect(resultOk).toBe('You clicked: Ok')
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[2]/button')).click()
-
-            await driver.switchTo().alert().dismiss()
-
-            //Verify if result after dismissing if valid
-            let resultCancel = await driver.findElement(By.xpath('//*[@id="result"]')).getText()
-            expect(resultCancel).toBe('You clicked: Cancel')
-
-            //Third alert
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[3]/button')).click()
-
-            //Var №2
-            //W8ing for alert
-            let textAlert = await driver.wait(webdriver.until.alertIsPresent())
-            //Sending text
-            await textAlert.sendKeys('Test text')
-            await textAlert.accept()
-
-            //Validating results of inputed text
-            let textResult = await driver.findElement(By.xpath('//*[@id="result"]')).getText()
-            expect(textResult).toBe('You entered: Test text')
+            await alerts.thirdAlertInit()
+            let thirdValidation = await alerts.verifyResult()
+            expect(thirdValidation).toBe('You entered: Test keys')
 
             done()
         }, 10000)
-    })
+    }, 10000)
 
     // //JS injections - skipped
     // //var №1 - insert into console injection: javascript: alert(document.cookie)
@@ -775,38 +761,27 @@ describe('tests block', () => {
     // //Key presses
 
     describe('execute scenatio of testing key presses', () => { //Green
-        test('it should display a last inputed into a string key', async (done) => {
+        it('should display a last inputed into a string key with page Object', async (done) => {
+            keyPresses = new KeyPresses(driver)
+            const url = locators.keyPressesUrl
 
-            await driver.get(mainUrl + 'key_presses')
+            await driver.get(url)
 
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="target"]')), 10000)
-            await driver.findElement(By.xpath('//*[@id="target"]')).sendKeys('q')
-            let key = await driver.findElement(By.xpath('//*[@id="result"]')).getText()
+            await keyPresses.sendQ()
+            let firstValidation = await keyPresses.getValue()
+            expect(firstValidation).toBe('You entered: Q')
 
-            expect(key).toBe('You entered: Q')
+            await keyPresses.sendKeysToBody()
+            //No key displayed
 
-            //Trying sendKey to body
-            await driver.findElement(By.xpath('/html/body')).sendKeys('q')
+            await keyPresses.sendRussianKeys()
+            let secondValidation = await keyPresses.getValue()
+            expect(secondValidation).toBe('You entered:')
 
-            //Result = no key displayed in *you entered* field
-
-            //Trying sendKey to input string in different languages
-            await driver.findElement(By.xpath('//*[@id="target"]')).sendKeys('й')
-            let key2 = await driver.findElement(By.xpath('//*[@id="target"]')).getText()
-
-            expect(key2).toBe('')
-
-            //Result = no difference between different languages, only eng language supported
-            //й is not detected by "Result" string
-
-            await driver.findElement(By.xpath('//*[@id="target"]')).sendKeys('qwerty')
-
-            await driver.findElement(By.xpath('//*[@id="target"]')).sendKeys(Key.CONTROL, 'a')
-
-            await driver.findElement(By.xpath('//*[@id="target"]')).sendKeys(Key.BACK_SPACE)
-            let key3 = await driver.findElement(By.xpath('//*[@id="result"]')).getText()
-
-            expect(key3).toBe('You entered: BACK_SPACE')
+            await keyPresses.sendQ()
+            await driver.findElement(By.xpath(locators.keyPressesTarget)).sendKeys(Key.BACK_SPACE)
+            let thirdValidation = await keyPresses.getValue()
+            expect(thirdValidation).toBe('You entered: BACK_SPACE')
 
             done()
         })
@@ -815,51 +790,41 @@ describe('tests block', () => {
     // //Large & Deep DOM 
 
     describe('execute scenario of testing a large DOM', () => { // Green
-        it('should render a page on various "deep" and switch between "anchors"', async (done) => {
-            jest.setTimeout(10000)
+        it('should render a page on various "deep" and switch between "anchors" with page objects', async (done) => {
+            dom = new DomPage(driver)
+            const url = locators.domUrl
 
-            let actions = driver.actions({ async: true })
-            await driver.get(mainUrl + 'large')
-
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="sibling-17.3"]')), 10000)
-            //Getting anchors (values, where cursor will me moved to)
-
-            let value0 = await driver.findElement(By.xpath('//*[@id="sibling-17.3"]'))
-            let value0Name = await driver.findElement(By.xpath('//*[@id="sibling-17.3"]')).getText()
-            let value1 = await driver.findElement(By.xpath('//*[@id="sibling-30.3"]'))
-            let value1Name = await driver.findElement(By.xpath('//*[@id="sibling-30.3"]')).getText()
-            let value2 = await driver.findElement(By.xpath('//*[@id="sibling-50.3"]'))
-            let value2Name = await driver.findElement(By.xpath('//*[@id="sibling-50.3"]')).getText()
-            let value3 = await driver.findElement(By.xpath('//*[@id="large-table"]/tbody/tr[38]/td[1]'))
-            let value3Name = await driver.findElement(By.xpath('//*[@id="large-table"]/tbody/tr[38]/td[1]')).getText()
-            let value4 = await driver.findElement(By.css('#large-table > tbody > tr.row-50 > td.column-50'))
-            let value4Name = await driver.findElement(By.css('#large-table > tbody > tr.row-50 > td.column-50')).getText()
+            await driver.get(url)
 
 
-            //Moving to each element in menu
-            await actions.move({ origin: value0 }).perform()
-            expect(value0Name).toBe('17.3')
-            await actions.move({ origin: value1 }).perform()
-            expect(value1Name).toBe('30.3')
-            await actions.move({ origin: value2 }).perform()
-            expect(value2Name).toBe('50.3')
-            await actions.move({ origin: value3 }).perform()
-            expect(value3Name).toBe('38.1')
-            await actions.move({ origin: value4 }).perform()
-            expect(value4Name).toBe('50.50')
+            await dom.moveToFirstElement()
+            let firstElementName = await dom.getElementText(locators.domElement1)
+            expect(firstElementName).toEqual('17.3')
 
-            await actions.move({ origin: value0 }).perform()
-            //"Jumping" because of actions = async?
+            await dom.moveToSecondElement()
+            let secondElementName = await dom.getElementText(locators.domElement2)
+            expect(secondElementName).toEqual('30.3')
 
-            //Back to top
+            await dom.moveToThirdElement()
+            let thirdElementName = await dom.getElementText(locators.domElement3)
+            expect(thirdElementName).toEqual('50.3')
+
+            await dom.moveToFourthElement()
+            let fourthElementName = await dom.getElementText(locators.domElement4)
+            expect(fourthElementName).toEqual('38.1')
+
+            await dom.moveToFifthElement()
+            let fifthElementName = await dom.getElementText(locators.domElement5)
+            expect(fifthElementName).toEqual('50.49')
+
             done()
-        })
-    }, 10000)
+        }, 15000)
+    }, 15000)
 
     // //New window
 
     describe('execute scenario of testing opening a new window', () => {//Green
-        it('should open a new window after clicking a link and switch on it ', async (done) => {
+        it.skip('should open a new window after clicking a link and switch on it ', async (done) => {
 
             await driver.get(mainUrl + 'windows')
             const originalWindow = await driver.getWindowHandle()
@@ -963,63 +928,37 @@ describe('tests block', () => {
     // //Redirection
 
     describe('execute scenario of testing a redirection', () => { //Green with question: parse http status from console, only with selenium/webdriver
-        it('should redirect on pages with various statuses.', async (done) => {
+        it('should redirect on pages with various statuses with page object', async (done) => {
+            redirection = new Redirection(driver)
+            const url = locators.redirectionUrl
 
-            await driver.get(mainUrl + 'redirector')
+            await driver.get(url)
 
-            //Open a redirect list
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="redirect"]')), 10000)
-            await driver.findElement(By.xpath('//*[@id="redirect"]')).click()
-            let url = await driver.getCurrentUrl()
-            expect(url).toBe('https://the-internet.herokuapp.com/status_codes')
+            await redirection.moveToMainPage()
+            await redirection.checkStatus200()
+            let status200Text = await redirection.getStatusBodyText()
+            expect(status200Text).toContain('This page returned a 200 status code.')
 
-            //Start checking status pages
-            //Status 200
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/ul/li[1]/a')), 10000)
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[1]/a')).click()
+            await driver.executeScript("window.history.go(-1)")
 
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/p')), 10000)
-            let status200 = await driver.findElement(By.xpath('//*[@id="content"]/div/p')).getText()
-            let status200text = await driver.findElement(By.xpath("//*[contains(text(), 'This page returned a 200 status code.')]")).getText()
-            expect(status200).toBe(status200text)
+            await redirection.checkStatus301()
+            let status301Text = await redirection.getStatusBodyText()
+            expect(status301Text).toContain('This page returned a 301 status code.')
 
-            await driver.executeScript("window.history.go(-1)");
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/ul/li[1]/a')), 10000)
+            await driver.executeScript("window.history.go(-1)")
 
-            //Status 301
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[2]/a')).click()
+            await redirection.checkStatus404()
+            let status404Text = await redirection.getStatusBodyText()
+            expect(status404Text).toContain('This page returned a 404 status code.')
 
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/p')), 10000)
-            let status301 = await driver.findElement(By.xpath('//*[@id="content"]/div/p')).getText()
-            let status301text = await driver.findElement(By.xpath("//*[contains(text(), 'This page returned a 301 status code.')]")).getText()
-            expect(status301).toBe(status301text)
+            await driver.executeScript("window.history.go(-1)")
 
-            await driver.executeScript("window.history.go(-1)");
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/ul/li[1]/a')), 10000)
-
-            //Status 404
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[3]/a')).click()
-
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/p')), 10000)
-            let status404 = await driver.findElement(By.xpath('//*[@id="content"]/div/p')).getText()
-            let status404text = await driver.findElement(By.xpath("//*[contains(text(), 'This page returned a 404 status code.')]")).getText()
-            expect(status404).toBe(status404text)
-
-            await driver.executeScript("window.history.go(-1)");
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/ul/li[1]/a')), 10000)
-
-            //Status 500
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[4]/a')).click()
-
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/p')), 10000)
-            let status500 = await driver.findElement(By.xpath('//*[@id="content"]/div/p')).getText()
-            let status500text = await driver.findElement(By.xpath("//*[contains(text(), 'This page returned a 500 status code.')]")).getText()
-            expect(status500).toBe(status500text)
-
-            await driver.executeScript("window.history.go(-1)");
+            await redirection.checkStatus500()
+            let status500Text = await redirection.getStatusBodyText()
+            expect(status500Text).toContain('This page returned a 500 status code.')
 
             done()
-        }, 10000)
+        })
     })
 
     // //Secure downloading
@@ -1059,119 +998,70 @@ describe('tests block', () => {
     // //Shadow DOM
 
     describe('execute scenario of testing text in shadow frame', () => {  //Green
-        it('should get and check text from shadow frames', async (done) => {
+        it('should get and check text from shadow frames with page object', async (done) => {
+            shadowDom = new ShadowDom(driver)
+            const url = locators.shadowDomUrl
 
-            await driver.get(mainUrl + 'shadowdom')
+            await driver.get(url)
 
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/my-paragraph[1]/span')), 10000)
-            //Get text from span
-            let text0 = await driver.findElement(By.xpath('//*[@id="content"]/my-paragraph[1]/span')).getText()
-            expect(text0).toBe('Let\'s have some different text!')
+            let spanValidation = await shadowDom.getTextFromSpan()
+            expect(spanValidation).toContain('Let\'s have some different text!')
 
-            //Get text from fist <li>
-            let text1 = await driver.findElement(By.xpath('//*[@id="content"]/my-paragraph[2]/ul/li[1]')).getText()
-            expect(text1).toBe('Let\'s have some different text!')
+            let firstLiValidation = await shadowDom.getTextFromFirstLi()
+            expect(firstLiValidation).toContain('Let\'s have some different text!')
 
-            //Get text from second <li>
-            let text2 = await driver.findElement(By.xpath('//*[@id="content"]/my-paragraph[2]/ul/li[2]')).getText()
-            expect(text2).toBe('In a list!')
+            let secondLiValidation = await shadowDom.getTextFromSecondLi()
+            expect(secondLiValidation).toContain('In a list!')
+
 
             done()
-        }, 10000)
-    })
+        }, 15000)
+    }, 15000)
 
     // //Shifting content
 
     describe('execute scenario of testing a shifting buttons', () => { //Green with questions: parse html data after every page reload
-        it('should move coursor on each shifted and unshifted button', async (done) => {
-            jest.setTimeout(15000)
-            const actions = driver.actions({ async: true })
-            await driver.get(mainUrl + 'shifting_content')
+        it('should move coursor on each shifted and unshifted button with page object', async (done) => {
+            shifting = new Shifting(driver)
+            const url = locators.shiftingUrl
 
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/a[1]')), 10000)
+            await driver.get(url)
 
-            //First link
-            await driver.findElement(By.xpath('//*[@id="content"]/div/a[1]')).click()
+            await shifting.goToFirstLink()
+            await shifting.shiftMenuPixels()
 
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/p[3]/a')), 10000)
-            await driver.findElement(By.xpath('//*[@id="content"]/div/p[3]/a')).click()
-
-            //Anchors            
-            let home = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[1]/a')).getText()
-            expect(home).toEqual('Home')
-
-            // let about = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[2]/a'))
-            // let contactUs = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[3]/a'))
-            // let portfolio = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[4]/a'))
-            // let gallery = await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[5]/a'))
-
-            let releaseAnchors = async function () {
-                await actions.move({ origin: await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[1]/a')) }).perform()
-                await actions.move({ origin: await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[2]/a')) }).perform()
-                await actions.move({ origin: await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[3]/a')) }).perform()
-                await actions.move({ origin: await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[4]/a')) }).perform()
-                await actions.move({ origin: await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[5]/a')) }).perform()
+            let releaseMenuTesting = async function () {
+                await shifting.checkHome()
+                await shifting.checkAbout()
+                await shifting.checkContact()
+                await shifting.checkPortfolio()
+                await shifting.checkGallery()
             }
-            await releaseAnchors()
+            await releaseMenuTesting()
+            // await shifting.randomizeMenu()
 
-            let urlBeforeRandoming = driver.getCurrentUrl()
-            await driver.get(mainUrl + 'shifting_content/menu?mode=random')
-            let urlAfterRandoming = driver.getCurrentUrl()
-            expect(urlBeforeRandoming).not.toBe(urlAfterRandoming)
+            await driver.get(url)
 
-            let urlBeforeShifring = driver.getCurrentUrl()
-            await driver.get(mainUrl + 'shifting_content/menu?pixel_shift=100')
-            let urlAfterShifring = driver.getCurrentUrl()
-            expect(urlBeforeShifring).not.toBe(urlAfterShifring)
+            await shifting.goToSecondLink()
 
-            let urlBeforeRandomShifting = driver.getCurrentUrl()
-            await driver.get(mainUrl + 'shifting_content/menu?mode=random&pixel_shift=100')
-            let urlAfterRandomShifting = driver.getCurrentUrl()
-            expect(urlBeforeRandomShifting).not.toBe(urlAfterRandomShifting)
+            let releaseImageTesting = async function () {
+                await shifting.randomizeImg()
+                await shifting.imgPixelShift()
+                await shifting.imgRandomizePixelShift()
+            }
+            await releaseImageTesting()
 
-            //Come back to main page
-            await driver.get(mainUrl + 'shifting_content')
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/a[2]')), 10000)
+            await driver.get(url)
 
-            //Select second example
-            await driver.findElement(By.xpath('//*[@id="content"]/div/a[2]')).click()
 
-            //Image shifting
-            let urlBeforeRandomingImage = driver.getCurrentUrl()
-            await driver.get(mainUrl + 'shifting_content/image?mode=random')
-            let urlAfterRandomingImage = driver.getCurrentUrl()
-            expect(urlBeforeRandomingImage).not.toBe(urlAfterRandomingImage)
-
-            let urlBeforeShiftingImage = driver.getCurrentUrl()
-            await driver.get(mainUrl + 'shifting_content/image?pixel_shift=100')
-            let urlAfterShiftingImage = driver.getCurrentUrl()
-            expect(urlBeforeShiftingImage).not.toBe(urlAfterShiftingImage)
-
-            let urlBeforeRandomShiftingImage = driver.getCurrentUrl()
-            await driver.get(mainUrl + 'shifting_content/image?mode=random&pixel_shift=100')
-            let urlAfterRandomShiftingImage = driver.getCurrentUrl()
-            expect(urlBeforeRandomShiftingImage).not.toBe(urlAfterRandomShiftingImage)
-
-            await driver.get(mainUrl + 'shifting_content/image?image_type=simple')
-
-            //Come back to main page
-            await driver.get(mainUrl + 'shifting_content')
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/a[3]')), 10000)
-
-            //Select third example
-            await driver.findElement(By.xpath('//*[@id="content"]/div/a[3]')).click()
+            await shifting.goToThirdLink()
+            let sampleBeforeReload = await shifting.getTextSample()
             await driver.navigate().refresh()
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/div/div')), 10000)
-            let generatedText = await driver.findElement(By.xpath('//*[@id="content"]/div/div/div')).getText()
-            await driver.navigate().refresh()
-            let generatedTextAfterRefresh = await driver.findElement(By.xpath('//*[@id="content"]/div/div/div')).getText()
-            expect(generatedText).not.toBe(generatedTextAfterRefresh)
-
-            await driver.wait(webdriver.until.elementLocated(By.xpath('//*[@id="content"]/div/div/div')), 10000)
-            await driver.navigate().refresh()
+            let sampleAfterReload = await shifting.getTextSample()
+            expect(sampleBeforeReload).not.toBe(sampleAfterReload)
 
             done()
-        }, 15000)
+        }, 20000)
     }, 15000)
 
     // //Slow Resources - skipped; reason: (after 30s - 503 error)
@@ -1180,64 +1070,17 @@ describe('tests block', () => {
 
     // //Status codes (duplicate of redirection)
 
-    describe('execute scenario of testing status codes page', () => { //Green
-        it('should get and check text from shadow frames', async (done) => {
-
-            await driver.get(mainUrl + 'status_codes')
-
-            //Start checking status pages
-            //Status 200
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[1]/a')).click()
-
-            let status200 = await driver.findElement(By.xpath('//*[@id="content"]/div/p')).getText()
-            let status200text = await driver.findElement(By.xpath("//*[contains(text(), 'This page returned a 200 status code.')]")).getText()
-            expect(status200).toBe(status200text)
-
-            await driver.executeScript("window.history.go(-1)");
-
-            //Status 301
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[2]/a')).click()
-
-            let status301 = await driver.findElement(By.xpath('//*[@id="content"]/div/p')).getText()
-            let status301text = await driver.findElement(By.xpath("//*[contains(text(), 'This page returned a 301 status code.')]")).getText()
-            expect(status301).toBe(status301text)
-
-            await driver.executeScript("window.history.go(-1)");
-
-            //Status 404
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[3]/a')).click()
-
-            let status404 = await driver.findElement(By.xpath('//*[@id="content"]/div/p')).getText()
-            let status404text = await driver.findElement(By.xpath("//*[contains(text(), 'This page returned a 404 status code.')]")).getText()
-            expect(status404).toBe(status404text)
-
-            await driver.executeScript("window.history.go(-1)");
-
-            //Status 500
-            await driver.findElement(By.xpath('//*[@id="content"]/div/ul/li[4]/a')).click()
-            let status500 = await driver.findElement(By.xpath('//*[@id="content"]/div/p')).getText()
-            let status500text = await driver.findElement(By.xpath("//*[contains(text(), 'This page returned a 500 status code.')]")).getText()
-            expect(status500).toBe(status500text)
-            await driver.executeScript("window.history.go(-1)");
-
-            done()
-        }, 10000)
-    }, 15000)
-
     // //Typos
 
     describe('execute scenario of testing status codes page', () => { //Green with question: triggering if/else if statements
-        it('should get and check text from shadow frames', async (done) => {
+        it('should get and check text with pageObject', async (done) => {
+            typos = new Typos(driver)
+            const url = locators.typosUrl
 
-            await driver.get(mainUrl + 'typos')
-
-            //Start refreshin page and checking text
-            expect(await driver.findElement(By.xpath('//*[contains(text(), "Sometimes you\'ll see a typo, other times you won\'t.") or contains(text(), "Sometimes you\'ll see a typo, other times you won,t.")]')))
-
-            let text = await driver.findElement(By.xpath('//*[@id="content"]/div/p[2]')).getText()
+            await driver.get(url)
 
             let magic = async function () {
-                //When else if statement triggered => console.log from if statement
+                let text = await typos.getTextSample()
                 if (
                     text = "Sometimes you'll see a typo, other times you won't."
                 ) {
@@ -1250,47 +1093,36 @@ describe('tests block', () => {
                 }
             }
             await magic()
-
             await driver.navigate().refresh()
-            expect(await driver.findElement(By.xpath('//*[contains(text(), "Sometimes you\'ll see a typo, other times you won\'t.") or contains(text(), "Sometimes you\'ll see a typo, other times you won,t.")]')))
             await magic()
-
-            await driver.navigate().refresh()
-            expect(await driver.findElement(By.xpath('//*[contains(text(), "Sometimes you\'ll see a typo, other times you won\'t.") or contains(text(), "Sometimes you\'ll see a typo, other times you won,t.")]')))
-            await magic()
-
 
             done()
-        }, 8000)
-    })
+        }, 20000)
+    }, 15000)
 
     // //Editor
 
     describe('execute scenario of testing text editor', function () {
-        it('should input text to editor', async (done) => {
+        it('should input text to editor and edit it with page object', async (done) => {
+            editor = new Editor(driver)
+            const url = locators.editorUrl
 
-            await driver.get(mainUrl + 'tinymce')
+            await driver.get(url)
 
-            //Start checking text editor
-            await driver.switchTo().frame(driver.findElement(By.id('mce_0_ifr')))
-            await driver.findElement(By.id('tinymce')).sendKeys(Key.CONTROL, 'a', Key.BACK_SPACE)
-            await driver.findElement(By.id('tinymce')).sendKeys('Test text')
-            let textValidation = await driver.findElement(By.id('tinymce')).getText()
-            expect(textValidation).toBe('Test text')
+            await editor.switchToFrame(locators.editorFrameId)
+            let textWindow = await editor.findMainElement()
+            await textWindow.sendKeys(Key.CONTROL, 'a', Key.BACK_SPACE)
+            await textWindow.sendKeys('Test text')
+            let testText = await editor.getTextFromWindow()
+            expect(testText).toBe('Test text')
 
-            await driver.findElement(By.id('tinymce')).sendKeys(Key.CONTROL, 'a')
-            //Exit from iFrame (text input area)
+            await textWindow.sendKeys(Key.CONTROL, 'a')
             await driver.switchTo().defaultContent()
-            //Making text bold
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div[1]/div[1]/div[2]/div/div[3]/button[1]')).click()
-
-            //Align Center
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div[1]/div[1]/div[2]/div/div[4]/button[2]')).click()
-
-            //Make text "Italic"
-            await driver.findElement(By.xpath('//*[@id="content"]/div/div/div[1]/div[1]/div[2]/div/div[3]/button[2]')).click()
+            await editor.makeBold()
+            await editor.alignToCenter()
+            await editor.makeItalic()
 
             done()
-        }, 10000)
+        })
     }, 10000)
 })
