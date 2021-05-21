@@ -2,6 +2,56 @@ const express = require('express')
 const Posts = require('../models/post.model')
 const router = express.Router()
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Post:
+ *       type: object
+ *       required:
+ *         - id
+ *         - title
+ *         - text
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the post
+ *         title:
+ *           type: string
+ *           description: The post title
+ *         text:
+ *           type: string
+ *           description: The post's text
+ *       example:
+ *         id: 333
+ *         title: "Example swagger title"
+ *         text: "Example swagger text" 
+ */
+
+
+/**
+ * @swagger
+ * /api/posts:
+ *   post:
+ *     summary: Create a new Post
+ *     tags: [Posts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *     responses:
+ *       200:
+ *         description: The Post was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       500:
+ *         description: Post server error
+ */
+
 //Create post
 router.post('/', async (req, res) => {
     try {
@@ -17,6 +67,22 @@ router.post('/', async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/posts:
+ *   get:
+ *      summary: Returns the list of all posts
+ *      tags: [Posts]
+ *      responses:
+ *        200:
+ *          description/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Post'
+ * 
+ */
+
 //Post findAll
 router.get('/', async(req, res) => {
     try {
@@ -27,6 +93,30 @@ router.get('/', async(req, res) => {
         res.status(500).json({ message: ' GetAll server error' })
     }
 })
+
+/**
+ * @swagger
+ * /api/posts/{id}:
+ *   get:
+ *     summary: Get the post by id
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The post id
+ *     responses:
+ *       200:
+ *         description: The post description by id
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       500:
+ *         description: The Post was not found
+ */
 
 // Post findById
 router.get('/:id', async(req, res) => {
@@ -41,6 +131,35 @@ router.get('/:id', async(req, res) => {
     }
 })
 
+/**
+ * @swagger
+ *   /api/posts/{id}:
+ *     put:
+ *       summary: Update the post by id
+ *       tags: [Posts]
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema: 
+ *             type: string
+ *           required: true
+ *           description: The post id
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       responses:
+ *         200:
+ *           description: The post was updated
+ *           content: 
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Post'
+ *         500:
+ *           description: Some server error
+ */
 
 //Post update
 router.put('/:id', async (req, res) => {
@@ -54,6 +173,27 @@ router.put('/:id', async (req, res) => {
         res.status(500).json({ message: 'Put server error' })
     }
 })
+
+/**
+ * @swagger
+ * /api/posts/{id}:
+ *   delete:
+ *     summary: Remove the post by id
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The post id
+ * 
+ *     responses:
+ *       200:
+ *         description: The post was deleted
+ *       500:
+ *         description: Some server error occured
+ */
 
 //Delete post by ID
 router.delete('/:id', async (req, res) => {

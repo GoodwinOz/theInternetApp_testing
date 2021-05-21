@@ -1,0 +1,6 @@
+node_modules
+seeders
+test/crud.blackbox.test.js
+test/crud.end-to-end.test.js
+uploads
+.env
